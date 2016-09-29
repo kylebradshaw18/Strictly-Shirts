@@ -1,2 +1,2 @@
 # Strictly-Shirts
-Strictly Shirts Capping Project
+Strictly Shirts Capping Project  
