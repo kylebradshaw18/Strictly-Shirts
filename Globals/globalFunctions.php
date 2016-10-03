@@ -171,7 +171,7 @@
     }
 
 
-    function buildFooter(){
+    function buildFooter($showSubscribe = false){
 
         /**
         This function will build the footer that will be displayed on almost every page
@@ -183,29 +183,33 @@
         $returnString = $returnString .  "<!--footer-->";
         $returnString = $returnString .  "<div class=\"footer\">";
             $returnString = $returnString .  "<div class=\"container\">";
-                $returnString = $returnString .  "<div class=\"footer-top\">";
-                    $returnString = $returnString .  "<div class=\"col-md-6 top-footer animated wow fadeInLeft\" data-wow-delay=\".5s\">";
-                        $returnString = $returnString .  "<h3>Follow Us On</h3>";
-                        $returnString = $returnString .  "<div class=\"social-icons\">";
-                            $returnString = $returnString .  "<ul class=\"social\">";
-                                $returnString = $returnString .  "<li><a href=\"#\"><i></i></a> </li>";
-                                $returnString = $returnString .  "<li><a href=\"#\"><i class=\"facebook\"></i></a></li>	";
-                                $returnString = $returnString .  "<li><a href=\"#\"><i class=\"google\"></i> </a></li>";
-                                $returnString = $returnString .  "<li><a href=\"#\"><i class=\"linked\"></i> </a></li>		";				
-                            $returnString = $returnString .  "</ul>";
-                                $returnString = $returnString .  "<div class=\"clearfix\"></div>";
+
+            if($showSubscribe){
+                    $returnString = $returnString .  "<div class=\"footer-top\">";
+                        $returnString = $returnString .  "<div class=\"col-md-6 top-footer animated wow fadeInLeft\" data-wow-delay=\".5s\">";
+                            $returnString = $returnString .  "<h3>Follow Us On</h3>";
+                            $returnString = $returnString .  "<div class=\"social-icons\">";
+                                $returnString = $returnString .  "<ul class=\"social\">";
+                                    $returnString = $returnString .  "<li><a href=\"#\"><i></i></a> </li>";
+                                    $returnString = $returnString .  "<li><a href=\"#\"><i class=\"facebook\"></i></a></li>	";
+                                    $returnString = $returnString .  "<li><a href=\"#\"><i class=\"google\"></i> </a></li>";
+                                    $returnString = $returnString .  "<li><a href=\"#\"><i class=\"linked\"></i> </a></li>		";				
+                                $returnString = $returnString .  "</ul>";
+                                    $returnString = $returnString .  "<div class=\"clearfix\"></div>";
+                            $returnString = $returnString .  "</div>";
                         $returnString = $returnString .  "</div>";
-                    $returnString = $returnString .  "</div>";
-                    $returnString = $returnString .  "<div class=\"col-md-6 top-footer1 animated wow fadeInRight\" data-wow-delay=\".5s\">";
-                        $returnString = $returnString .  "<h3>Newsletter</h3>";
-                            $returnString = $returnString .  "<form action=\"#\" method=\"post\">";
-                                $returnString = $returnString .  "<input type=\"text\" name=\"email\" value=\"\" onfocus=\"this.value='';\" onblur=\"if (this.value == '') {this.value ='';}\">";
-                                $returnString = $returnString .  "<input type=\"submit\" value=\"SUBSCRIBE\">";
-                            $returnString = $returnString .  "</form>";
-                    $returnString = $returnString .  "</div>";
-                    $returnString = $returnString .  "<div class=\"clearfix\"> </div>	";
-                $returnString = $returnString .  "</div>	";
-            $returnString = $returnString .  "</div>";
+                        $returnString = $returnString .  "<div class=\"col-md-6 top-footer1 animated wow fadeInRight\" data-wow-delay=\".5s\">";
+                            $returnString = $returnString .  "<h3>Newsletter</h3>";
+                                $returnString = $returnString .  "<form action=\"#\" method=\"post\">";
+                                    $returnString = $returnString .  "<input type=\"text\" name=\"email\" value=\"\" onfocus=\"this.value='';\" onblur=\"if (this.value == '') {this.value ='';}\">";
+                                    $returnString = $returnString .  "<input type=\"submit\" value=\"SUBSCRIBE\">";
+                                $returnString = $returnString .  "</form>";
+                        $returnString = $returnString .  "</div>";
+                        $returnString = $returnString .  "<div class=\"clearfix\"> </div>	";
+                    $returnString = $returnString .  "</div>	";
+                $returnString = $returnString .  "</div>";
+            }
+
                 $returnString = $returnString .  "<div class=\"footer-bottom\">";
                 $returnString = $returnString .  "<div class=\"container\">";
                         $returnString = $returnString .  "<div class=\"col-md-3 footer-bottom-cate animated wow fadeInLeft\" data-wow-delay=\".5s\">";
@@ -235,9 +239,9 @@
                         $returnString = $returnString .  "<div class=\"col-md-3 footer-bottom-cate cate-bottom animated wow fadeInRight\" data-wow-delay=\".5s\">";
                             $returnString = $returnString .  "<h6>Our Address</h6>";
                             $returnString = $returnString .  "<ul>";
-                                $returnString = $returnString .  "<li><i class=\"glyphicon glyphicon-map-marker\" aria-hidden=\"true\"></i>Address : 12th Avenue, 5th block, XYZ</li>";
-                                $returnString = $returnString .  "<li><i class=\"glyphicon glyphicon-envelope\" aria-hidden=\"true\"></i>Email : <a href=\"mailto:info@example.com\">info@example.com</a></li>";
-                                $returnString = $returnString .  "<li><i class=\"glyphicon glyphicon-earphone\" aria-hidden=\"true\"></i>Phone : +1234 567 567</li>";
+                                $returnString = $returnString .  "<li><i class=\"glyphicon glyphicon-map-marker\" aria-hidden=\"true\"></i>Address : <a href=\"https://www.google.com/maps/place/Marist/@41.7224565,-73.9363091,17z/data=!3m1!4b1!4m5!3m4!1s0x89dd3dfdfc580a91:0x6db18d47ff70fe6c!8m2!3d41.7224565!4d-73.9341204\">3399 North Road, Poughkeepsie, NY 12601</a></li>";
+                                $returnString = $returnString .  "<li><i class=\"glyphicon glyphicon-envelope\" aria-hidden=\"true\"></i>Email : <a href=\"mailto:StrictlyShirtsMarist@gmail.com\">StrictlyShirtsMarist@gmail.com</a></li>";
+                                $returnString = $returnString .  "<li><i class=\"glyphicon glyphicon-earphone\" aria-hidden=\"true\"></i>Phone : (845) 575-3000</li>";
                             $returnString = $returnString .  "</ul>";
                         $returnString = $returnString .  "</div>";
                         $returnString = $returnString .  "<div class=\"clearfix\"> </div>";

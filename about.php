@@ -5,7 +5,7 @@
 
   //Use this to link to the conenctions page for the database functions
   //require 'Globals/connections.php';
-//
+
     buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
     buildHeader(); //Builds the Header and Navigation Bar
 
@@ -25,6 +25,6 @@
 
 
 
-    buildFooter(); //Builds the Footer
+    buildFooter(false); //Builds the Footer
 
     ?>

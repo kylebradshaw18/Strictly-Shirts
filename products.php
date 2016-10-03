@@ -5,9 +5,16 @@
 
   //Use this to link to the conenctions page for the database functions
   //require 'Globals/connections.php';
-//
-    buildHTMLHeadLinks('false');// Builds all of the links takes in parameter for the auto slider needs to be a string
+  
+    buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
     buildHeader(); //Builds the Header and Navigation Bar
+
+
+    //Builds the breadcrumbs dynamically
+    //Need to put this on the other pages remove from this page
+    $array = array(
+        array("products.php","Products") );
+    buildBreadCrumbs($array);
 
 
     /**
@@ -18,6 +25,6 @@
 
 
 
-    buildFooter(true); //Builds the Footer
+    buildFooter(); //Builds the Footer
 
     ?>
