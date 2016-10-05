@@ -11,7 +11,6 @@
 
 
     //Builds the breadcrumbs dynamically
-    //Need to put this on the other pages remove from this page
     $array = array(
         array("about.php","About Us") );
     buildBreadCrumbs($array);

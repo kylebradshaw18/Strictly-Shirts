@@ -257,7 +257,7 @@
     }
 
     function buildBreadCrumbs(&$pageInformationArray){
-        //Takes in a multi dimensional array the first is the 
+        //Takes in a multi dimensional array the first is the the page location, the second is the label
         //This Function builds the breadcrumbs on every page except the home page
         if (!(Count($pageInformationArray) > 0)){
             return;
@@ -273,7 +273,7 @@
         //Loop through array passed in which will create the multiple breadcrumbs
         for($index = 0; $index < Count($pageInformationArray); $index++){
             if( $index < (Count($pageInformationArray) - 1)){
-                $returnString = $returnString . " <li><a href=\"". $pageInformationArray[$index][0] ."\">Home</a></li>";
+                $returnString = $returnString . " <li><a href=\"". $pageInformationArray[$index][0] ."\">". $pageInformationArray[$index][1] ."</a></li>";
             } else{
                 $returnString = $returnString . "<li class=\"active\">". $pageInformationArray[$index][1] ."</li>";
             }

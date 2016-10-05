@@ -1,5 +1,4 @@
 <?php 
-    
   //Use this to link to the global function page
   require 'Globals/globalFunctions.php';
 
