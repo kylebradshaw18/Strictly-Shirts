@@ -1,0 +1,7 @@
+If the database gets deleted
+run the project and then in the new window in the url add /phpmyadmin
+sign is as username = strictlyShirts password = strictlyShirts
+then create the database strictly_shirts if it does not exist
+once you have navigated to the data base download the StrictlyShirtsDB.sql file and import it into the database
+
+This will create all of the temporary tables with the default rows

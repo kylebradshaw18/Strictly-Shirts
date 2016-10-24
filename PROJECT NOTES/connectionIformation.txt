@@ -1,0 +1,8 @@
+when starting anew page use the require 'connection.php' file
+this will set a global variable $conn to the mysql connection
+
+PHP is special and we do not have to worry about closing the connection
+because it will automatically do this for up once the php is done executing
+
+when running a sql script use the global variable $conn and the query or stored proc to 
+get the results.

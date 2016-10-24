@@ -1,0 +1,5 @@
+Session variables are bad practice but I do not see any other way to easily transfer data from page to page
+
+Im going to try and limit this by only using $_SESSION['personID']
+
+With this being the only session variables it should not screw everything up when multiple tabs of the website are open

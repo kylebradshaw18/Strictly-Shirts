@@ -1,0 +1,5 @@
+go into the bash terminal and enter phpmyadmin-ctl install
+
+after click on the link and use username = strictlyShirts and password = strictlyShirts
+
+IF THIS does not work use user name kylebradshaw (this one has no password)

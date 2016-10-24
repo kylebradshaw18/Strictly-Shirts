@@ -2723,4 +2723,10 @@ h1.typo1 {
 th {
     font-size: 0.875em;
 }
+
+.center_div{
+    margin: 0 auto;
+    width:80%; /* value of your choice which suits your alignment */
+}
+
 }

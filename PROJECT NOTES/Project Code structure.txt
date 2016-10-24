@@ -1,0 +1,16 @@
+Main folders
+
+    Globals
+        This will hold global pages that will be used by all of the php pages
+        ex database connections, page that builds all of the html header and footers, and regular gloabl functions that 
+        will be used on multiple pages
+        
+    PROJECT NOTES
+        This folder will contain text files that are used as manuals for the project,
+        Will demonstrate what the page is doing. Making notes to try and make the code consistant throughout
+        
+    
+    Page Functions
+        This will be used as a functions page foreach specific page,
+        This will help reduce page clutter on the php pages 
+        I am naming it the same as the page it references to reduce confusion
