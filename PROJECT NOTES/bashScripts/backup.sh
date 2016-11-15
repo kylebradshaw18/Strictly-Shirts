@@ -4,8 +4,8 @@
 
 THESITE="StrictlyShirts"
 THEDB="strictly_shirts"
-THEDBUSER="root"
-THEDBPW=""
+THEDBUSER="strictlyShirts"
+THEDBPW="strictlyShirts"
 THEDATE=`date +%d%m%y%H%M`
 
 mysqldump -u $THEDBUSER -p${THEDBPW} $THEDB | gzip > /home/administrator/backups/files/dbbackup_${THEDB}_${THEDATE}.bak.gz
