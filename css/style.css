@@ -825,7 +825,7 @@ p.footer-class a:hover{
 .login-right form {
 	padding: 1em 0;
 }
-.login-right span {
+.login-right label {
 	color: #b2b2b2;
 	font-size:0.9em;
 	padding-bottom: 0.4em;
@@ -834,15 +834,9 @@ p.footer-class a:hover{
 .word-in{
 	margin: 0.5em 0 0;
 }
-.login-right input[type="text"] {
-	border: 1px solid #bbb;
-	outline-color:#fa03bb;
-	width: 96%;
-	font-size:0.9em;
-	padding:10px;
-	  margin: 0.5em 0;
-}
-.login-right input[type="password"] {
+.login-right input[type="text"],
+.login-right input[type="email"],
+.login-right input[type="password"]{
 	border: 1px solid #bbb;
 	outline-color:#fa03bb;
 	width: 96%;
@@ -915,13 +909,15 @@ ul.social {
 	font-family:'Poiret One', cursive;
 	font-weight:700;
 }
-.register-top-grid span, .register-bottom-grid span {
+.register-top-grid label, .register-bottom-grid label {
 	color:#b2b2b2;
 	font-size: 0.9em;
 	padding-bottom: 0.2em;
 	display: block;
 }
-.register-top-grid input[type="text"], .register-bottom-grid input[type="password"] {
+
+.register-top-grid input, 
+.register-bottom-grid input{
 	border: 1px solid #EEE;
 	outline-color:#fa03bb;
 	width: 100%;
@@ -929,14 +925,7 @@ ul.social {
 	padding: 0.5em;
 	margin: 0.5em 0;
 }
-.register-bottom-grid input[type="password"] {
-	border: 1px solid #EEE;
-	outline-color:#fa03bb;
-	width: 100%;
-	font-size: 1em;
-	padding: 0.5em;
-	margin: 0.5em 0;
-}
+
 .checkbox {
 	margin-bottom: 4px;
 	padding-left: 27px;
@@ -1006,7 +995,7 @@ ul.social {
 .register-but{
 	margin-top:1em;
 }
-.register-but form input[type="submit"] {
+.register-but input{
 	background:#fa03bb;
 	color: #FFF;
 	font-size:1em;
@@ -1062,7 +1051,7 @@ ul.kid-menu{
 }
 .menu-drop > li > a {
 	width: 100%;
-  margin: 0.3em 0;
+    margin: 0.3em 0;
 	display:inline-block;
 	position: relative;
 	color: #B2B2B2;
@@ -2610,7 +2599,7 @@ h3.cate {
 .login-left p {
   width: 100%;
 }
-.login-right span {
+.login-right label {
   padding-bottom: 0em;
 }
 .register-but {
@@ -2724,9 +2713,103 @@ th {
     font-size: 0.875em;
 }
 
-.center_div{
-    margin: 0 auto;
-    width:80%; /* value of your choice which suits your alignment */
 }
 
+
+
+/******************************************************************************
+				Account Page
+*******************************************************************************/
+.panel.with-nav-tabs .panel-heading{
+    padding: 5px 5px 0 5px;
+}
+.panel.with-nav-tabs .nav-tabs{
+	border-bottom: none;
+}
+.panel.with-nav-tabs .nav-justified{
+	margin-bottom: -1px;
+}
+/********************************************************************/
+/*** PANEL DEFAULT ***/
+.with-nav-tabs.panel-default .nav-tabs > li > a,
+.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+    color: #777;
+}
+.with-nav-tabs.panel-default .nav-tabs > .open > a,
+.with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+    color: #777;
+	background-color: #ddd;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-default .nav-tabs > li.active > a,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+	color: #555;
+	background-color: #fff;
+	border-color: #ddd;
+	border-bottom-color: transparent;
+}
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+    color: #777;   
+}
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+    background-color: #ddd;
+}
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    color: #fff;
+    background-color: #555;
+}
+
+.page-header h2 {
+	color:#fa03bb;
+	font-size:3em;
+	margin:0 0 1em;
+	text-align:center;
+	font-family:'Poiret One', cursive;
+	font-weight:700;
+}
+.account-but{
+	margin-top:1em;
+}
+.account-but input{
+	background:#fa03bb;
+	color: #FFF;
+	font-size:1em;
+	padding: 0.4em 1em;
+	transition: 0.5s all;
+	-webkit-transition: 0.5s all;
+	-moz-transition: 0.5s all;
+	-o-transition: 0.5s all;
+	display: inline-block;
+	border:none;
+	outline:none;
+}
+.account-but input[type="submit"]:hover {
+	background:#403b37;
+	margin:0px auto;
+}
+/** For Accordian  Table Orders Table Account page*/
+.hiddenRow {
+    padding: 0 !important;
+}
+/******************************************************************************
+				End of Account Page
+*******************************************************************************/
+
+
+
+/** Products Page */
+.productsSpace{
+    padding-bottom:2%;
 }

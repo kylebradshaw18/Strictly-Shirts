@@ -1,0 +1,71 @@
+<table class="table table-condensed table-bordered table-list table-hover table-responsive" id="accountOrdersModalTable">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Reference Number</th>
+                            <th>Date</th>
+                            <th>Address</th>
+                            <th>Payment</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountOptionsTable">
+                        <tr data-toggle="collapse" data-target=".demo1" class="accordion-toggle">
+                            <td class="text-center">delete</td>
+                            <td class="text-center">0145353 </td>
+                            <td class="text-center">01/24/2015 </td>
+                            <td class="text-center">132 test road test, NY </td>
+                            <td class="text-center">23423423234234</td>
+                            <td class="text-center"> <button  class="btn btn-xs btn-info" onclick="stopAccordion(event);">View</button> </td>
+                        </tr>
+                        <tr>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo1 text-center">Delete</div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo1 text-center">Image</div> <!-- Set height and width the same -->
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo1 text-center">Design </div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo1 text-center">size</div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo1 text-center">Quantity</div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo1 text-center">Price</div>
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target=".demo2" class="accordion-toggle">
+                            <td>delete</td>
+                            <td>0145353 </td>
+                            <td>01/24/2015 </td>
+                            <td>132 test road test, NY </td>
+                            <td>23423423234234</td>
+                            <td> <button  class="btn btn-xs btn-info" onclick="stopAccordion(event);">View</button> </td>
+                        </tr>
+                        <tr>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo2 text-center">Delete</div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo2 text-center">Image</div> <!-- Set height and width the same -->
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo2 text-center">Design </div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo2 text-center">size</div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo2 text-center">Quantity</div>
+                            </td>
+                            <td class="hiddenRow">
+                                <div class="accordian-body collapse demo2 text-center">Price</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                

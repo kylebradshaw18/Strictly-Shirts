@@ -1,0 +1,14 @@
+ <tr>
+  <td class="text-center">
+      <input type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#updatePaymentOptionModal" value="Edit" data-id="30"/><span></span>
+      <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deletePaymentOptionModal" value="Delete"/>
+      <span hidden>30</span>
+    </td>
+    <td name="cardNameColumn">Kyle Bradshaw</td>
+    <td name="cardTypeColumn">Visa</td>
+    <td name="cardNumberColumn">1234-1234</td>
+    <td name="cardSecurityColumn">12594</td>
+    <td name="cardExpirationColumn">12/2019</td>
+    <td name="primaryColumn"><i class="glyphicon glyphicon-star"></i></td>
+  </tr>
+  
