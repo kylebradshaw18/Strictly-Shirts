@@ -12,7 +12,7 @@
     
     //$results = $conn->query("SELECT `quantity` FROM `products` WHERE `productId` = ".$_GET['id']);
     //$returnValue = $results->fetch_assoc()['quantity'];
-    $returnValue = $_POST['id'];
+    $returnValue = $_GET['id'];
     //return array
     echo json_encode($returnValue);
 ?>

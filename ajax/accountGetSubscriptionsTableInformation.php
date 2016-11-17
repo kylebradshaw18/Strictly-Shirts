@@ -1,0 +1,20 @@
+<?php
+    /**
+    * This page serves as the call from the subscriptions modal on the accounts page
+    */
+    //header('Content-Type: application/json'); May need this when we bring the code to the server
+    // Start the session
+	session_start();
+    $returnValue = array("");  //return value for the call
+
+    //Use this to link to the connections page for the database functions
+    require_once('../Globals/connection.php');
+    $sql =  "SELECT `category`, `subscriptionId`, DATE_FORMAT(`date`,'%m-%d-%Y') AS `date` FROM `subscriptions` INNER JOIN `categories` ON subscriptions.categoryId  = categories.categoryId ";
+    $sql .= " WHERE `personId` = ".$_SESSION['personId']. " ORDER BY `category`, `date`";
+    $results = $conn->query($sql);
+    while($row = $results->fetch_assoc()) {
+        $returnValue[] = $row;
+    }
+    //return array
+    echo json_encode($returnValue);
+?>

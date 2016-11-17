@@ -24,15 +24,25 @@ if (isset($_GET['id'])) {
     <div class="container">
     <!-- Selection Bar -->
     <div class="col-md-2" id="leftCol">
+       <form action="categoryPage.php" method="get">
         <ul class="nav nav-stacked text-center" id="sidebar">
           <li>
             <div class="form-group">
               <label for="productsSelectCategory">Categories</label>
-              <select class="form-control" id="productsSelectCategory"> <?php echo $categories; ?></select>
+              <select class="form-control" id="productsSelectCategory" name="id"> 
+              <?php   //Query to build cateories
+                      $results = $conn->query("SELECT `categoryId`, `category` FROM `categories` ORDER BY `category`");
+                        while($row = $results->fetch_assoc()) { ?>
+                         <option value = "<?php echo $row['categoryId'];?>"><?php echo $row['category'];?></option>
+              <?php } ?>
+              </select>
             </div>
           </li>
-          <li><button type="button" class="btn btn-sm btn-info" onclick="updateProductsGrid();" value="Search" title="Search For Shirts">Search</button></li>
+          <li>
+              <button type="submit" class="btn btn-sm btn-info" onclick="updateProductsGrid();" value="Search" title="Search For Shirts">Search</button>
+          </li>
         </ul>
+       </form>
       </div>
       
       <!--Start of Grid-->
@@ -47,7 +57,7 @@ if (isset($_GET['id'])) {
                 
                 $result = $conn->query($sql);
                 $c = 0;
-                $n = 3; // Each Nth iteration would be a new table row
+                $n = 4; // Each Nth iteration would be a new table row
                 while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
                      $productId = $row["productId"];
                      $typeId = $row["typeId"];
@@ -65,26 +75,13 @@ if (isset($_GET['id'])) {
                         "WHERE products.typeId = types.typeId ".
                         "AND products.productId = '$productId'";
 
-    $resType = $conn->query($queryType) or die(mysqli_error());
-    while ($rowType = mysqli_fetch_array($resType)) {
-          $type = $rowType["type"];
-
-    }
+    $resType = $conn->query($queryType);
+                      $rowType = mysqli_fetch_array($resType);
+                      $type = $rowType["type"];
 
 
-    //get the color for a particular product
-    $queryCol =   "SELECT colors.color ".
-                        "FROM products,colors ".
-                        "WHERE products.colorId = colors.colorId ".
-                        "AND products.productId = '$productId'";
-
-    $resCol = $conn->query($queryCol) or die(mysqli_error());
-    while ($rowCol = mysqli_fetch_array($resCol)) {
-          $color = $rowCol["color"];
-
-    }
-
-    //get the size for a particular product
+    /**
+    get the size for a particular product
     $querySize =   "SELECT sizes.size ".
                         "FROM products,sizes ".
                         "WHERE products.sizeId = sizes.sizeId ".
@@ -94,7 +91,7 @@ if (isset($_GET['id'])) {
     while ($rowSize = mysqli_fetch_array($resSize)) {
           $size = $rowSize["size"];
 
-    }
+    }*/
     
 
     //get the design for a particular product
@@ -103,12 +100,9 @@ if (isset($_GET['id'])) {
                         "WHERE products.designId = designs.designId ".
                         "AND products.productId = '$productId'";
 
-    $resDesign = $conn->query($queryDesign) or die(mysqli_error());
-    
-    while ($rowDesign = mysqli_fetch_array($resDesign)) {
-          $design = $rowDesign["design"];
-
-    }
+    $resDesign = $conn->query($queryDesign);
+                      $rowDesign = mysqli_fetch_array($resDesign);
+                      $design = $rowDesign["design"];
     
 
     //get the category for a particular product
@@ -117,13 +111,12 @@ if (isset($_GET['id'])) {
                         "WHERE products.categoryId = categories.categoryId ".
                         "AND products.productId = '$productId'";
 
-    $resCategory = $conn->query($queryCategory) or die(mysqli_error());
-    while ($rowCategory = mysqli_fetch_array($resCategory)) {
-          $category = $rowCategory["category"];
+    $resCategory = $conn->query($queryCategory);
+                      $rowCategory = mysqli_fetch_array($resCategory);
+                      $category = $rowCategory["category"];
 
-    }
                     if ($c % $n == 0 && $c != 0) { // If $c is divisible by $n...
-                        echo '<div class="row"</div>';
+                        echo '<div class="row"></div>';
                         
                     }
 
@@ -147,7 +140,6 @@ if (isset($_GET['id'])) {
           </div>
         </div>
       </div>
-
 
 <!-- Product Modal -->
 <div id="productModal<?php echo $productId ?>" class="modal fade" role="dialog">
@@ -176,14 +168,6 @@ if (isset($_GET['id'])) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="accountOrderType" class="col-xs-4 control-label">Type:</label>
-                            <div class="col-xs-5">
-                                <select class="form-control" id="productModalType" name="productModalType">
-                                  <?php echo $type; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label for="productModalSize" class="col-xs-4 control-label">Size:</label>
                             <div class="col-xs-5">
                                 <select class="form-control" id="productModalSize" name="productModalSize">
@@ -192,11 +176,9 @@ if (isset($_GET['id'])) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="productModalColor" class="col-xs-4 control-label">Color:</label>
+                            <label for="quantityLeftModal" class="col-xs-4 control-label">Quantity Left:</label>
                             <div class="col-xs-5">
-                                <select class="form-control" id="productModalColor" name="productModalColor">
-                                  <?php echo $color; ?>
-                                </select>
+                                <div class="list-group-item" id="quantityLeft" name="quantityLeft"><?php echo $quantity ?></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -228,7 +210,8 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 </div>
-                    
+
+
       <?php 
     }
 

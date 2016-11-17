@@ -2,6 +2,7 @@ function productModalQuantity(type){
     var value = 1;
 }
 
+
 function setModalValues(id){
     //first reset alerts on the modal
     $("#productsModalAlert").html("");
@@ -72,7 +73,7 @@ function getMaxQuantity(id){
       {
         url : "ajax/productQuantity.php",
         type: "GET",
-        date:{id:id},
+        data:{id:id},
         async: false,
         success: function(response) {
             //get array from ajax call
@@ -89,4 +90,38 @@ function getMaxQuantity(id){
       });
     
     return returnValue;
+}
+
+
+function addToCart(productId, quantity){
+    var alertString = "";
+     $.ajax(
+          {
+            url : "ajax/addToCart.php",
+            type: "POST",
+            data : {productId: productId, quantity:quantity},
+            async: false,
+            success: function(response) {
+                try{
+                    debugger;
+                    //get array from ajax call
+                    response = JSON.parse(response);
+                    if(response.length > 1){
+                        //Loop through response and create alerts set the index t one because the first is an empty string
+                        for(var index = 1; index < response.length;index++){
+                            alertString += addAlert(response[index],"danger");
+                        }
+                    } 
+                } catch(error) {
+                    console.log(response);
+                    console.log(error);
+                    alertString += addAlert(response,"danger");
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+                console.log(textStatus);
+                alertString += addAlert(errorThrown,"danger");
+            }
+          });
 }

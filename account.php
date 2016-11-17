@@ -62,7 +62,6 @@
         }
 	}
 	
-    
     //Use this to link to the global function page
 	require_once('Globals/buildHTML.php');
     buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
@@ -172,7 +171,7 @@
                                                 <div class="col-md-7">
                                                     <input type="button" class="btn btn-info" data-toggle="modal" data-target="#changePasswordModal" onclick="resetModalValues('password')" value="Change Password"/>
                                                     <span></span>
-                                                    <input type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal"  value="Delete Account"/>
+                                                    <!--<input type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal"  value="Delete Account"/>-->
                                                 </div>
                                             </div>
                                             
@@ -308,7 +307,7 @@
                                                 <h2>Address Information</h2>
                                               </div>
                                               <div class="col col-xs-6 text-right">
-                                                <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#accountAddressModal" onclick="resetModalValues('address')" value="Add Address" title="Add Address">Add Address</button>
+                                                <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#accountAddressModal" value="Add Address" title="Add Address">Add Address</button>
                                               </div>
                                             </div>
                                           </div>
@@ -329,18 +328,18 @@
                                                 </tr> 
                                               </thead>
                                               <tbody id="accountAddressTable">
-                                                  <?php //Address Query and table
+                                                <?php //Address Query and table
                                                 	$sql =  "SELECT `addrId`, `addressLine1`, `apartmentNumber`, `city`, `state`, `zipcode`, `isPrimaryAddress` FROM `addresses` ";
                                                     $sql .= " WHERE `personId` = ".$_SESSION['personId']. " ORDER BY `isPrimaryAddress` DESC, `state`, `city`, `zipcode`, `addressLine1`";
                                                     $results = $conn->query($sql);
                                                     
                                                     if($results ->num_rows > 0){
-                                                        while($row = $results->fetch_assoc()) {  //start of main loop for address table?>
+                                                        while($row = $results->fetch_assoc()) { //loop through addresses ?>
                                                             <tr id="actionAddressRow_<?php echo $row['addrId'];?>">
                                                                 <td class="text-center">
                                                                     <input type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#accountAddressModal" value="Edit" data-id="<?php echo $row['addrId'];?>"/>
                                                                     <span> </span>
-                                                                    <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteAddressModal" value="Delete" data-id="<? php echo $row['addrId'];?>" />
+                                                                    <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteAddressModal" value="Delete"data-id="<?php echo $row['addrId'];?>"/>
                                                                     <span hidden><?php echo $row['addrId'];?></span>
                                                                 </td>
                                                                 <td name="addressColumn"><?php echo $row['addressLine1'];?></td>
@@ -350,14 +349,14 @@
                                                                 <td name="apartmentColumn"><?php echo $row['apartmentNumber'];?></td>
                                                                 <?php if($row['isPrimaryAddress'] === "0"){ //If False Show Empty star?>
                                                                     <td name="primaryColumn"><i class="glyphicon glyphicon-star-empty"></i></td>
-                                                                <?php } else { ?>
+                                                                <?php } else {?>
                                                                     <td name="primaryColumn"><i class="glyphicon glyphicon-star"></i></td>
-                                                                <?php }?>
+                                                                <?php } ?>
                                                             <tr>
-                                                        <?php } 
-                                                	} else { ?>
+                                                    <?php } //end of main loop
+                                                	} else {  //No rows so show no rows?>
                                                 	    <tr><td colspan="7" class="text-center">No Addresses Found</td></tr>
-                                                	<?php }?>
+                                                <?php } //End Address Table?>
                                               </tbody>
                                             </table>
                                           </div>
@@ -565,7 +564,7 @@
                                                 <h2>Payment Information</h2>
                                               </div>
                                               <div class="col col-xs-6 text-right">
-                                                <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#accountPaymentOptionsModal" onclick="resetModalValues('paymentoption')" value="Add Card" title="Add Card">Add Card</button>
+                                                <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#accountPaymentOptionsModal" value="Add Card" title="Add Card">Add Card</button>
                                               </div>
                                             </div>
                                           </div>
@@ -586,18 +585,18 @@
                                                 </tr> 
                                               </thead>
                                               <tbody id="accountPaymentOptionsTable">
-                                                  <?php //Payment Options Query and table
+                                                <?php //Payment Options Query and table
                                                 	$sql =  "SELECT `payId`, `personId`, `cardNum`, `csc`, `type`, `isPrimaryPayment`, `expirationMonth`, `expirationYear`, `nameOnCard` FROM `paymentmethods` ";
                                                     $sql .= " WHERE `personId` = ".$_SESSION['personId']. " ORDER BY `isPrimaryPayment` DESC, `type`, `expirationYear` DESC, `expirationMonth` DESC, `cardNum`";
                                                     $results = $conn->query($sql);
                                                     
                                                     if($results ->num_rows > 0){
                                                         while($row = $results->fetch_assoc()) { ?>
-                                                            <tr id="actionPaymentRow_<?php echo ['payId'];?>">
-                                                                <td class="text-center">
+                                                            <tr id="actionPaymentRow_<?php echo $row['payId'];?>">
+                                                                <td class="text-center" >
                                                                     <input type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#updatePaymentOptionsModal" value="Edit" data-id="<?php echo $row['payId'];?>"/>
                                                                     <span> </span>
-                                                                    <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deletePaymentOptionsModal" value="Delete" data-id="<?php echo $row['payId'];?>"/>
+                                                                    <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deletePaymentOptionsModal" value="Delete"data-id="<?php echo $row['payId'];?>"/>
                                                                     <span hidden><?php echo $row['payId'];?></span>
                                                                 </td>
                                                                 <td name="cardNameColumn"><?php echo $row['nameOnCard'];?></td>
@@ -605,15 +604,15 @@
                                                                 <td name="cardNumberColumn"><?php echo $row['cardNum'];?></td>
                                                                 <td name="cardSecurityColumn"><?php echo $row['csc'];?></td>
                                                                 <td name="cardExpirationColumn"><?php echo $row['expirationMonth']. "/" .$row['expirationYear'];?></td>
-                                                                <?php if($row['isPrimaryPayment'] === "0"){ //If False Show Empty star ?>
+                                                                <?php if($row['isPrimaryPayment'] === "0"){ //If False Show Empty star?>
                                                                     <td name="primaryColumn"><i class="glyphicon glyphicon-star-empty"></i></td>
                                                                 <?php } else { ?>
                                                                     <td name="primaryColumn"><i class="glyphicon glyphicon-star"></i></td>
-                                                                <?php }?>
+                                                                <?php } ?>
                                                             <tr>
-                                                        <?php } 
-                                                	} else { //no rows ?>
-                                                	    <tr><td colspan="7" class="text-center">No Cards Found</td></tr>
+                                                    <?php } 
+                                                    } else { //No Rows so show message?>
+                                                        <tr><td colspan="7" class="text-center">No Cards Found</td></tr>
                                                 <?php }?>
                                               </tbody>
                                             </table>
@@ -710,6 +709,13 @@
                                                 <label for="accountModalExpirationYear" class="col-lg-4 control-label">Expiration Year:</label>
                                                 <div class="col-lg-5">
                                                     <select class="form-control" id="accountPaymentOptionsModalExpirationYear" name="accountModalExpirationYear">
+                                                        <?php //Expiration Year select
+                                                            $currentYear = date("Y");
+                                                            $startYear = $currentYear - 3;
+                                                            $endYear = $currentYear + 5;
+                                                        	for($year = $startYear; $year < $endYear; $year++) { //Loop through years ?>
+                                                                <option value="<?php echo $year;?>"><?php echo $year;?></option>
+                                                        <?php }?>
                                             		</select>
                                                 </div>
                                             </div>
@@ -898,8 +904,7 @@
                                                 
                                             </div>
                                             
-                                            <br>
-                                            
+                                            <br> <!-- End Of Order-->
                                             
                                             
                                             
@@ -944,7 +949,6 @@
 <!-- END ORDERS TAB =============================================================================================================================================-->
 
 
-
 <!-- Subscriptions Tab =============================================================================================================================================-->
                         <div class="tab-pane fade" id="tabSubscriptionsDefault">
                             <div class="container">
@@ -975,34 +979,33 @@
                                               </thead>
                                               <tbody id="accountSubscriptionsTable">
                                                 <?php //Subscriptions Query and table
-                                                	$sql =  "SELECT `category`, `subscriptionId`, DATE_FORMAT(`date`,'%m-%d-%Y') FROM `subscriptions` INNER JOIN `categories` ON subscriptions.categoryId  = category.categoryId ";
+                                                	$sql =  "SELECT `category`, `subscriptionId`, DATE_FORMAT(`date`,'%m-%d-%Y') AS `date` FROM `subscriptions` INNER JOIN `categories` ON subscriptions.categoryId  = categories.categoryId ";
                                                     $sql .= " WHERE `personId` = ".$_SESSION['personId']. " ORDER BY `category`, `date`";
                                                     $results = $conn->query($sql);
                                                     
                                                     if($results ->num_rows > 0){
-                                                        while($row = $results->fetch_assoc()) { //loop through subscriptions?>
-                                                            <tr id="actionAddressRow_<?php echo $row['subscriptionId'];?>">
-                                                                <td class="text-center">
-                                                                    <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSubscriptionModal" value="Delete" data-id="<?php echo $row['subscriptionId'];?>"/>
+                                                        while($row = $results->fetch_assoc()) { //Main loop for the subscriptions table ?>
+                                                            <tr id="actionSubscriptionRow_<?php echo $row['subscriptionId'];?>">
+                                                                <td class="text-center" >
+                                                                    <input type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSubscriptionsModal" value="Delete"data-id="<?php echo $row['subscriptionId'];?>"/>
                                                                     <span hidden><?php echo $row['subscriptionId'];?></span>
                                                                 </td>
-                                                                <td name="subscriptionColumn"><?php echo $row['category']?></td>
-                                                                <td name="dateColumn"><?php echo $row['date'];?></td>
+                                                                <td name="subscriptionColumn"><?php echo $row['category'];?></td>
+                                                                <td name="dateColumn"><?php echo $row['date']?></td>
                                                             <tr>
-                                                    <?php } //end of while loop 
-                                                	} else { //no rows ?>
-                                                	    <tr><td colspan="3" class="text-center">No Subscriptions Found</td></tr>
-                                                <?php }?>
+                                                    <?php }
+                                                    } else { //No Rows So display the row ?>
+                                                        <tr><td colspan="3" class="text-center">No Subscriptions Found</td></tr>
+                                                <?php } ?>
                                               </tbody>
                                             </table>
                                           </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!--Subscription Delete Dialog ==============================================-->
-                            <div id="deleteSubscriptionModal" class="modal fade" role="dialog">
+
+                            <!--Delete Subscriptions Modal============================================================-->
+                            <div id="accountDeleteSubscriptionsModal" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
                                     <div class="modal-content">
@@ -1049,28 +1052,25 @@
                                                 <label for="accountModalSubscriptionCategory" class="col-lg-4 control-label">Expiration Month:</label>
                                                 <div class="col-lg-5">
                                                     <select class="form-control" id="accountSubscriptionModalSubscriptionCategory" name="accountSubscriptionModalSubscriptionCategory">
-                                                        <?php  //Add Subscriptions select
-                                                            $results = $conn->query("SELECT DISTINCT `category` FROM `categories` ORDER BY `category`");
-                                                            while($row = $results->fetch_assoc()) {  //loop through subscriptions ?>
-                                                                <option value="<?php echo $row['category'];?>"><?php echo $row['category'];?></option>
+                                                        <?php //subscriptions select
+                                                        	$results = $conn->query("SELECT `categoryId`, `category` FROM `categories` ORDER BY `category`");
+                                                            while($row = $results->fetch_assoc()) { //Loop through categories ?>
+                                                                <option value="<?php echo $row['categoryId'];?>"><?php echo $row['category'];?></option>
                                                         <?php }?>
                                             		</select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button href="#" class="btn btn-primary" id="accountModalUpdateSubscriptionsSave" onclick="accountModaSubscriptions()">Update Card</button>
+                                            <button href="#" class="btn btn-primary" id="accountModalUpdateSubscriptionsSave" onclick="accountModalSubscriptions()">Update Card</button>
                                             <button href="#" class="btn" data-dismiss="modal" id="accountModalSubscriptionsClose" aria-hidden="true">Close</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
                             <!--End Subscriptions  Modal========================================================-->
-
                         </div> 
 <!-- End Subscriptions Tab ================================================================================================================================= -->
-
 
                     </div>
                 </div>

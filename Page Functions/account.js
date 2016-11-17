@@ -54,6 +54,14 @@ $(document).ready(function(){
     });
     
     
+    //Reset the values in the modal and set if edit
+    $('#accountSubscriptionsModal').on('show.bs.modal', function(e) {
+        //Clear Alerts There is no edit only delete and add modal
+        removeAlerts('accountSubscriptionsModalAlert');
+        removeAlerts('accountSubscriptionsAlert');
+    });
+    
+    
     
     //DELETE MODALS
     //Address
@@ -68,8 +76,10 @@ $(document).ready(function(){
     });
     
     //Subscription
-     $('#deleteSubscriptionModal').on('show.bs.modal', function(e) {
-        //Gets all of the attributes from the selected row
+     $('#accountDeleteSubscriptionsModal').on('show.bs.modal', function(e) {
+        //Remove Alerts and grab id
+        removeAlerts('accountDeleteSubscriptionsModalAlert');
+        removeAlerts('accountSubscriptionsAlert');
         $('#accountDeleteSubscriptionID').val(e.relatedTarget.dataset.id); //set hidden id value
     });
     
@@ -185,18 +195,17 @@ function resetModalValues(modal){
             removeAlerts('accountPaymentOptionsModalAlert');
             removeAlerts('accountDeletePaymentOptionsModalAlert');
             
-            //before setting value on year dropdown create it
-            addYearsExpirationPaymentOptions('#accountAddPaymentOptionsModalExpirationYear');
-            
             $("#accountPaymentOptionsModalNameCard").val("");
             $("#accountPaymentOptionsModalCardType").val("American Express");
             $("#accountPaymentOptionsModalCardNumber").val("");
             $("#accountAddressModalZip").mask("9999999999999999");
+            $("#accountAddressModalZip").val("");
             $("#accountPaymentOptionsModalSecurityCode").val("");
+            $("#accountPaymentOptionsModalSecurityCode").mask("99999");
             var date = new Date();
-            $("#accountAddPaymentOptionsModalExpirationMonth").val(date.getMonth().toString());
-            $("#accountAddPaymentOptionsModalExpirationYear").val(date.getFullYear().toString());
-            $("#accountAddPaymentOptionsModalPrimaryPaymentOption").val("Yes");
+            $("#accountPaymentOptionsModalExpirationMonth").val(date.getMonth().toString());
+            $("#accountPaymentOptionsModalExpirationYear").val(date.getFullYear().toString());
+            $("#accountPaymentOptionsModalPrimaryPaymentOption").val("Yes");
             $('#accountPaymentOptionsModalPaymentID').val("-1");
             
             //Sets the focus to the first input on modal
@@ -426,7 +435,6 @@ function accountModalDeletePaymentOptions(){
     //Add the alerts to the div
     //I defaulted the value above to empty string so set the inner html to the alerts
     //Alerts will not show if the string is empty
-    var informationChanged = false;
     $.ajax(
       {
         url : "ajax/accountDeletePaymentOptionsModal.php",
@@ -442,8 +450,6 @@ function accountModalDeletePaymentOptions(){
                     for(var index = 1; index < response.length;index++){
                         alertString += addAlert(response[index],"danger");
                     }
-                } else { //No Errors so row was inserted now update the address table
-                    informationChanged = true;
                 }
             } catch(error) {
                 console.log(response);
@@ -463,14 +469,9 @@ function accountModalDeletePaymentOptions(){
     if(alertString.trim().length < 1){
         //Close modal by triggering a click on the close button
         $('#accountModalDeletePrimaryOptionsClose').trigger('click');
+        updatePaymentOptionsTabTable();
     } else { //show alert
         $("#accountDeletePaymentOptionsModalAlert").html(alertString);
-    }
-    
-    //Update the html table with the new information
-    //Calling it down here because it is bad practice to use nested ajax calls
-    if(informationChanged){
-        updatePaymentOptionsTabTable();
     }
 }
 
@@ -478,30 +479,23 @@ function accountModalDeletePaymentOptions(){
 
 
 //function to validate address information from payment modal
-function accountModalPaymentOptions(call){
+function accountModalPaymentOptions(){
     var alertString = "";
     
     //Global Variables
-    var nameCard, cardType, cardNumber, security, expirationMonth, expirationYear, primary;
-    var paymentId = -1;
+    var nameCard, cardType, cardNumber, security, expirationMonth, expirationYear, primary, call = "add", paymentId = -1;
     
-    if(call === "add"){
-        nameCard = $("#accountAddPaymentOptionsModalNameCard").val().trim();
-        cardType = $("#accountAddPaymentOptionsModalCardType").val().trim();
-        cardNumber = $("#accountAddPaymentOptionsModalCardNumber").val().trim();
-        security = $("#accountAddPaymentOptionsModalSecurityCode").val().trim();
-        expirationMonth = $("#accountAddPaymentOptionsModalExpirationMonth").val().trim();
-        expirationYear = $("#accountAddPaymentOptionsModalExpirationYear").val().trim();
-        primary = $("#accountAddPaymentOptionsModalPrimaryPaymentOption").val().trim();
-    } else {
-        nameCard = $("#accountEditPaymentOptionsModalNameCard").val().trim();
-        cardType = $("#accountEditPaymentOptionsModalCardType").val().trim();
-        cardNumber = $("#accountEditPaymentOptionsModalCardNumber").val().trim();
-        security = $("#accountEditPaymentOptionsModalSecurityCode").val().trim();
-        expirationMonth = $("#accountEditPaymentOptionsModalExpirationMonth").val().trim();
-        expirationYear = $("#accountEditPaymentOptionsModalExpirationYear").val().trim();
-        primary = $("#accountEditPaymentOptionsModalPrimaryPaymentOption").val().trim();
-        paymentId = $('#accountEditPaymentOptionsModalPaymentID').val();
+    nameCard = $("#accountPaymentOptionsModalNameCard").val().trim();
+    cardType = $("#accountPaymentOptionsModalCardType").val().trim();
+    cardNumber = $("#accountPaymentOptionsModalCardNumber").val().trim();
+    security = $("#accountPaymentOptionsModalSecurityCode").val().trim();
+    expirationMonth = $("#accountPaymentOptionsModalExpirationMonth").val().trim();
+    expirationYear = $("#accountPaymentOptionsModalExpirationYear").val().trim();
+    primary = $("#accountPaymentOptionsModalPrimaryPaymentOption").val().trim();
+    paymentId = $('#accountPaymentOptionsModalPaymentID').val();
+    
+    if(parseInt(paymentId) > 0){
+        call = "edit";
     }
     
     //Name on Card
@@ -518,52 +512,18 @@ function accountModalPaymentOptions(call){
         alertString += addAlert("Card number is required","danger");
     } else if(cardNumber.length > 20){
         alertString += addAlert("Invalid card","danger");
-    } //else if(isNaN(parseInt(cardNumber))){
-       // alertString += addAlert("Invalid card","danger");
-    //}
-    /*
+    } 
+    //Security Checks
     //https://www.cybersource.com/developers/getting_started/test_and_manage/best_practices/card_type_id/
-    switch(cardType.toLocaleLowerCase()){
-        case "american express":
-            if(cardNumber.length < 1){
-                alertString += addAlert("Card number is required","danger");
-            }else if(cardNumber.length >20){
-                alertString += addAlert("Invalid card","danger");
-            } 
-            //else if(cardNumber.length !== 15){
-              //  alertString += addAlert("Invalid card","danger");
-            //}// else if (cardNumber[0].toString() !== "3"){
-               // alertString += addAlert("Invalid card","danger");
-            //} else if (cardNumber[1].toString() !== "4" && cardNumber[1].toString() !== "7"){
-              //  alertString += addAlert("Invalid card","danger");
-            //}
-            break;
-        case "discover":
-            if(cardNumber.length < 1){
-                alertString += addAlert("Card number is required","danger");
-            } else if(cardNumber.length > 20){
-                alertString += addAlert("Invalid card","danger");
-            } 
-            break;
-        case "master":
-            
-            break;
-        case "visa":
-            break;
-    }
-    */
     
     //security code
     if(security.length !== 3 && security.length !== 4){
         alertString += addAlert("Invalid card","danger");
     } 
     
-    
     //Add the alerts to the div
     //I defaulted the value above to empty string so set the inner html to the alerts
     //Alerts will not show if the string is empty
-    var informationChanged = false;
-    debugger;
     if(alertString.trim().length < 1){  //no errors now make ajax call
     
         $.ajax(
@@ -574,7 +534,6 @@ function accountModalPaymentOptions(call){
             async: false,
             success: function(response) {
                 try{
-                    debugger;
                     //get array from ajax call
                     response = JSON.parse(response);
                     if(response.length > 1){
@@ -582,8 +541,6 @@ function accountModalPaymentOptions(call){
                         for(var index = 1; index < response.length;index++){
                             alertString += addAlert(response[index],"danger");
                         }
-                    } else { //No Errors so row was inserted now update the address table
-                        informationChanged = true;
                     }
                 } catch(error) {
                     console.log(response);
@@ -600,44 +557,63 @@ function accountModalPaymentOptions(call){
           });
     }
     
-    
-    if(call === "add"){
-        $("#accountAddPaymentOptionsModalAlert").html(alertString);
-    } else if (call === "edit"){
-        $("#accountUpdatePaymentOptionsModalAlert").html(alertString);
-    }
+    $("#accountPaymentOptionsModalAlert").html(alertString);
     
     //If no errors then close modal
     if(alertString.trim().length < 1){
-        //Close modal by triggering a click on the close button
-        if(call === "add"){
-            $('#accountModalAddPaymentOptionsClose').trigger('click');
-        } else if (call === "edit"){
-            $('#accountModalUpdatePaymentOptionsClose').trigger('click');
-        }
-    }
-    
-    //Update the html table with the new information
-    //Calling it down here because it is bad practice to use nested ajax calls
-    if(informationChanged){
+        //Update Table
         updatePaymentOptionsTabTable();
+        //Close modal by triggering a click on the close button
+        $('#accountModalPaymentOptionsClose').trigger('click');
     }
 }
 
 
-function addYearsExpirationPaymentOptions(){
-    var html = "";
-    var date = new Date();
-    var startYear = date.getFullYear() - 5;
-    var endYear = date.getFullYear() + 5;
+//function to validate address information from payment modal
+function accountModalSubscriptions(){
+    var alertString = "";
     
-    for(var index = startYear; index <= endYear; index++){
-        html += "<option value=\""+index+"\">"+index+"</option>";
+    //Global Variables
+    var Id = $('#accountSubscriptionModalSubscriptionCategory').val();
+    $.ajax(
+      {
+        url : "ajax/accountSubscriptionsModal.php",
+        type: "POST",
+        data : {Id:Id},
+        async: false,
+        success: function(response) {
+            try{
+                //get array from ajax call
+                response = JSON.parse(response);
+                if(response.length > 1){
+                    //Loop through response and create alerts set the index t one because the first is an empty string
+                    for(var index = 1; index < response.length;index++){
+                        alertString += addAlert(response[index],"danger");
+                    }
+                }
+            } catch(error) {
+                console.log(response);
+                console.log(error);
+                alertString += addAlert(response,"danger");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(errorThrown);
+            console.log(textStatus);
+            alertString += addAlert(errorThrown,"danger");
+        }
+      });
+    
+    $("#accountSubscriptionsModalAlert").html(alertString);
+    
+    //If no errors then close modal
+    if(alertString.trim().length < 1){
+        //Update Table
+        updateSubscriptionsTabTable();
+        //Close modal by triggering a click on the close button
+        $('#accountModalSubscriptionsClose').trigger('click');
     }
-    
-    $("#accountPaymentOptionsModalExpirationYear").html(html);
 }
-
 
 
 //This function updates the html address table
@@ -697,10 +673,7 @@ function updateAddressTabTable(){
       $("#accountAddressTable").html(innerHtml);
 }
 
-
-
-
-//This function updates the html address table
+//This function updates the html payment options table
 function updatePaymentOptionsTabTable(){
     var innerHtml = "<tr><td colspan=\"7\" class=\"text-center\">No Cards Found</td></tr>";
     
@@ -717,7 +690,6 @@ function updatePaymentOptionsTabTable(){
                 if(response.length > 1){ //we have rows so loop and show them
                     innerHtml = ""; //reset to empty string
                     for(var index = 1; index < response.length; index++){
-                        
                         innerHtml += "<tr id=\"actionPaymentRow_"+ response[index].payId +"\">"
                             innerHtml += "<td class=\"text-center\" >";
                                 innerHtml += "<input type=\"button\" class=\"btn btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#updatePaymentOptionsModal\" value=\"Edit\" data-id=\""+response[index].payId+"\"/>";
@@ -729,7 +701,7 @@ function updatePaymentOptionsTabTable(){
                             innerHtml += "<td name=\"cardTypeColumn\">" + response[index].type + "</td>";
                             innerHtml += "<td name=\"cardNumberColumn\">" + response[index].cardNum + "</td>";
                             innerHtml += "<td name=\"cardSecurityColumn\">" + response[index].csc + "</td>";
-                            innerHtml += "<td name=\"cardExpirationColumn\">" + response[index].expirationMonth + " / " + response[index].expirationYear + "</td>";
+                            innerHtml += "<td name=\"cardExpirationColumn\">" + response[index].expirationMonth + "/" + response[index].expirationYear + "</td>";
                             
                             //primary column
                             innerHtml += "<td name=\"primaryColumn\"><i class=\"glyphicon glyphicon-star";
@@ -746,8 +718,7 @@ function updatePaymentOptionsTabTable(){
                 alertString += addAlert(response,"danger");
             }
         },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
+        error: function(jqXHR, textStatus, errorThrown){
             console.log(errorThrown);
             console.log(textStatus);
         }
@@ -756,3 +727,48 @@ function updatePaymentOptionsTabTable(){
       //Update the table
       $("#accountPaymentOptionsTable").html(innerHtml);
 }
+
+
+//This function updates the html subscriptions table
+function updateSubscriptionsTabTable(){
+    var innerHtml = "<tr><td colspan=\"3\" class=\"text-center\">No Subscriptions Found</td></tr>";
+    
+    $.ajax(
+      {
+        url : "ajax/accountGetSubscriptionsTableInformation.php",
+        type: "GET",
+        async: false,
+        success: function(response) {
+            try{
+                //get array from ajax call
+                response = $.parseJSON(response);
+                
+                if(response.length > 1){ //we have rows so loop and show them
+                    innerHtml = ""; //reset to empty string
+                    for(var index = 1; index < response.length; index++){
+                        innerHtml += "<tr id=\"actionSubscriptionRow_"+ response[index].subscriptionId +"\">"
+                            innerHtml += "<td class=\"text-center\">";
+                                innerHtml += "<input type=\"button\" class=\"btn btn-danger btn-xs\" data-toggle=\"modal\" data-target=\"#deleteSubscriptionsModal\" value=\"Delete\" data-id=\""+response[index].subscriptionId+"\"/>";
+                                innerHtml += "<span hidden>"+response[index].subscriptionId+"</span>";
+                            innerHtml += "</td>";
+                            innerHtml += "<td name=\"subscriptionColumn\">" + response[index].category + "</td>";
+                            innerHtml += "<td name=\"dateColumn\">" + response[index].date + "</td>";
+                        innerHtml += "</tr>";
+                    }
+                }
+            } catch(error) {
+                console.log(response);
+                console.log(error);
+                alertString += addAlert(response,"danger");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(errorThrown);
+            console.log(textStatus);
+        }
+      });
+      
+      //Update the table
+      $("#accountSubscriptionsTable").html(innerHtml);
+}
+
