@@ -51,6 +51,25 @@ if (isset($_GET['id'])) {
       
 
     <?php
+    //Dont need the catregories table since we already have the id just use the products table
+    //also join the design table so we can get the name of the design so we can display it on the modal.
+    //If we decide to do a page with all of the products then just have an if the query and remove the where clause where we are checking the category id.
+    
+    //Order them by design
+    //Then inside of this main loop of products after we display the image and name on the grid 
+    //after this write another query so that we can get evrything else from the inventory table and loop through this and display them in hidden input tags
+    //Can create a string of all of the values from that row. use !@!# to split them make sure we do not have spaces ex. color-red,1!@!#type-Oneck,1!@!#small-small,1!@!#Quantity,12!@!#Price,14.95
+    //Do this for every row in the inventory table so we have the information on the screen (We can get away with this approach because we are not amazon and do not have alot of traffic.)
+    
+    //Then in javascript we need to pull this information and show it on the modal
+    //Create onchange function calls to update the values when the user changes the the size.
+    
+    
+    //TODO if feeling good
+    //On the product grid the way we have it is that a small giants shirt can be more than an extra small. (price)
+    //Write query to pull max and min values and if they are not the same then display them like this on the products grid ($12.95 - $19.89) 'JUST LIKE AMAZON'
+    
+    
     $sql =   "SELECT * FROM `products`,`categories` 
                         WHERE products.categoryId = categories.categoryId 
                         AND categories.categoryId = '$id'";

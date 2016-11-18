@@ -170,7 +170,7 @@
                                                 <label class="col-lg-3 control-label">Password:</label>
                                                 <div class="col-md-7">
                                                     <input type="button" class="btn btn-info" data-toggle="modal" data-target="#changePasswordModal" onclick="resetModalValues('password')" value="Change Password"/>
-                                                    <span></span>
+                                                    <span> </span>
                                                     <!--<input type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal"  value="Delete Account"/>-->
                                                 </div>
                                             </div>
