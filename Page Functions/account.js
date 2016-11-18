@@ -91,7 +91,7 @@ $(document).ready(function(){
 function updateAccountModalPasword(){
     var alertString = "";
     //Clear alerts on modal
-    $("#accountPersonalInformationTabAlert").html(alertString);
+    removeAlerts('accountPersonalInformationTabAlert');
     
     //Global Variables
     var currentPassword = $("#accountChangePasswordModalCurrentPassword").val().trim();
@@ -167,6 +167,12 @@ function updateAccountModalPasword(){
         $("#accountPersonalInformationTabAlert").html(addAlert("Password has been updated","success"));
     }
     
+}
+
+function deleteAccount(){
+    //Set the value on the form to delete the account
+    $('#deleteAccountValue').val("Yes");
+    $('#tabAccountDefaultSubmit').trigger('click');
 }
 
 

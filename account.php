@@ -171,14 +171,15 @@
                                                 <div class="col-md-7">
                                                     <input type="button" class="btn btn-info" data-toggle="modal" data-target="#changePasswordModal" onclick="resetModalValues('password')" value="Change Password"/>
                                                     <span> </span>
-                                                    <!--<input type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal"  value="Delete Account"/>-->
+                                                    <input type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccountModal"  value="Delete Account"/>
                                                 </div>
                                             </div>
+                                            <input type="password"  id="deleteAccountValue" name="deleteAccountValue" value="No" hidden>
                                             
                                             <div class="form-group">
                                                 <label class="col-md-4 control-label"></label>
                                                 <div class="col-md-6">
-                                                    <input type="submit" class="btn btn-success" value="Update Information" name="tabAccountDefaultSubmit">
+                                                    <input type="submit" class="btn btn-success" value="Update Information" name="tabAccountDefaultSubmit" id="tabAccountDefaultSubmit">
                                                     <span></span>
                                                     <input type="reset" class="btn btn-default" value="Cancel">
                                                 </div>
