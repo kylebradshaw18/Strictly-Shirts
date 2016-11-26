@@ -669,13 +669,14 @@ p.footer-class a:hover{
 	font-family: 'Poiret One', cursive;
 	font-weight:700;
 }
-.contact-bottom  span,.contact-bottom-top span{
+.contact-bottom  label,.contact-bottom-top label{
 	font-size:1.2em;
 	color:#fff;
 	display:block;
 	padding:0 0 0.5em;
 }
-.contact-bottom  input[type="text"]{
+.contact-bottom  input[type="text"],
+.contact-bottom  input[type="email"]{
 	width:100%;
 	padding:0.7em;	
 	border:1px solid #bbb;
@@ -752,7 +753,7 @@ p.footer-class a:hover{
 .address {
   padding: 3em 0 0;
 }
-.contact span {
+.contact label {
 	color: #b2b2b2;
 	font-size:0.9em;
 	padding-bottom: 0.2em;
@@ -1852,6 +1853,14 @@ ul.social {
 .address-grid {
   margin: 0 0 1em;
 }
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
 /*--account--*/
 .account h2 ,.register h2{
   margin: 0;
@@ -2544,7 +2553,8 @@ h3.cate {
   padding: 0;
     margin: 0.5em 0 0;
 }
-.contact-bottom input[type="text"] {
+.contact-bottom input[type="text"],
+.contact-bottom input[type="email"]{
   padding: 0.5em;
 }
 .contact-bottom-top {
@@ -2812,4 +2822,26 @@ th {
 /** Products Page */
 .productsSpace{
     padding-bottom:2%;
+}
+
+/* Loadin Spinner Css */
+#loadingDiv {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    top: 47%;
+    left: 48%;
+    display:block;
+    position: absolute;
+    margin: auto;
+    z-index: 9999;
+    animation: spin 2s linear infinite;
+    position: fixed;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

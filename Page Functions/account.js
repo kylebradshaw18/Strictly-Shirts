@@ -1,8 +1,9 @@
-//Creates a mask for the phone number
 $(document).ready(function(){
     //Mask phone number 
     $("#accountPhone").mask("(999) 999-9999");
     
+    //Remove the last hr from the orders panel in every order
+    $('.media-list hr:last-child').remove();
     
     //Reset the values in the modal and set if edit
     $('#accountAddressModal').on('show.bs.modal', function(e) {
@@ -56,9 +57,22 @@ $(document).ready(function(){
     
     //Reset the values in the modal and set if edit
     $('#accountSubscriptionsModal').on('show.bs.modal', function(e) {
-        //Clear Alerts There is no edit only delete and add modal
-        removeAlerts('accountSubscriptionsModalAlert');
-        removeAlerts('accountSubscriptionsAlert');
+        //First clear or set the values in the modal to defaults
+        resetModalValues("subscription");
+        
+        var subscriptionId = e.relatedTarget.dataset.id; //get the id for that row
+        if(subscriptionId > 0){
+            //Show or hide the options depending if it is edit or add
+            $("#accountSubscriptionsModalCategorySelectShow").hide();
+            $("#accountSubscriptionsModalCategorySingleShow").show();
+            
+            //Set the value of the id
+            $("#accountSubscriptionModalSubscriptionId").val(subscriptionId);
+            //Set the values of the address mode we are in edit
+            var rowId = $("#actionSubscriptionRow_"+ subscriptionId);
+            $("#accountSubscriptionModalSubscriptionAddress").val($(rowId).find('td span').eq(2).text());
+            $("#accountSubscriptionModalSubscriptionCategorySingle").html($(rowId).find('td').eq(1).text());
+        } 
     });
     
     
@@ -91,7 +105,7 @@ $(document).ready(function(){
 function updateAccountModalPasword(){
     var alertString = "";
     //Clear alerts on modal
-    $("#accountPersonalInformationTabAlert").html(alertString);
+    removeAlerts('accountPersonalInformationTabAlert');
     
     //Global Variables
     var currentPassword = $("#accountChangePasswordModalCurrentPassword").val().trim();
@@ -166,7 +180,12 @@ function updateAccountModalPasword(){
         //Show successful alert that the password was changed
         $("#accountPersonalInformationTabAlert").html(addAlert("Password has been updated","success"));
     }
-    
+}
+
+function deleteAccount(){
+    //Set the value on the form to delete the account
+    $('#deleteAccountValue').val("Yes");
+    $('input[name=\'tabAccountDefaultSubmit\']').trigger('click');
 }
 
 
@@ -201,7 +220,7 @@ function resetModalValues(modal){
             $("#accountAddressModalZip").mask("9999999999999999");
             $("#accountAddressModalZip").val("");
             $("#accountPaymentOptionsModalSecurityCode").val("");
-            $("#accountPaymentOptionsModalSecurityCode").mask("99999");
+            $("#accountPaymentOptionsModalSecurityCode").mask("9999");
             var date = new Date();
             $("#accountPaymentOptionsModalExpirationMonth").val(date.getMonth().toString());
             $("#accountPaymentOptionsModalExpirationYear").val(date.getFullYear().toString());
@@ -225,6 +244,19 @@ function resetModalValues(modal){
             removeAlerts('accountOrdersTabAlert');
             setOrdersDeleteModalValues(-1,"item");
             break;
+            
+        case "subscription":
+            //Clear Alerts There is no edit only delete and add modal
+            removeAlerts('accountSubscriptionsModalAlert');
+            removeAlerts('accountSubscriptionsAlert');
+            $("#accountSubscriptionsModalCategorySelectShow").show();
+            $("#accountSubscriptionsModalCategorySingleShow").hide();
+            $("#accountSubscriptionModalSubscriptionId").val("-1");
+            $("#accountSubscriptionModalSubscriptionCategorySelect").val($("#accountSubscriptionModalSubscriptionCategorySelect option:first").val());
+            $("#accountSubscriptionModalSubscriptionAddress").val($("#accountSubscriptionModalSubscriptionAddress option:first").val());
+            break;
+            
+            
     }
     
 }
@@ -236,9 +268,20 @@ function removeAlerts(id){
 }
 
 //Function to set the values of the modal for the orders delete
-function setOrdersDeleteModalValues(id, type){
+function setDeleteOrdersModalValues(id, invId){
+    
+    removeAlerts('accountDeletePaymentOptionsModalAlert');
+    removeAlerts('accountOrdersTabAlert');
+    
     $("#accountDeleteOrderID").val(id);
-    $("#accountDeleteOrderType").val(type);
+    $("#accountDeleteOrderInventoryId").val(invId);
+    
+    //have inventory id so change label to item
+    if(invId > 0){
+        $('#accountDeleteOrderItem').text("item");
+    } else {
+        $('#accountDeleteOrderItem').text("order");
+    }
 }
 
 
@@ -330,7 +373,6 @@ function accountModalAddress(){
             async: false,
             success: function(response) {
                 try{
-                    debugger;
                     //get array from ajax call
                     response = JSON.parse(response);
                     if(response.length > 1){
@@ -468,10 +510,105 @@ function accountModalDeletePaymentOptions(){
     //If no errors then close modal
     if(alertString.trim().length < 1){
         //Close modal by triggering a click on the close button
-        $('#accountModalDeletePrimaryOptionsClose').trigger('click');
+        $('#accountModalDeletePaymentOptionsClose').trigger('click');
         updatePaymentOptionsTabTable();
     } else { //show alert
         $("#accountDeletePaymentOptionsModalAlert").html(alertString);
+    }
+}
+
+//function to delete order
+function accountModalDeleteOrder(){
+    var alertString = "";
+    
+    //Global Variables
+    var orderId = $('#accountDeleteOrderID').val(), inventoryId = $('#accountDeleteOrderInventoryId').val();
+    
+    $.ajax(
+      {
+        url : "ajax/accountDeleteOrdersModal.php",
+        type: "POST",
+        data : {orderId:orderId, inventoryId:inventoryId},
+        async: false,
+        success: function(response) {
+            try{
+                //get array from ajax call
+                response = JSON.parse(response);
+                if(response.length > 1){
+                    //Loop through response and create alerts set the index t one because the first is an empty string
+                    for(var index = 1; index < response.length;index++){
+                        alertString += addAlert(response[index],"danger");
+                    }
+                }
+            } catch(error) {
+                console.log(response);
+                console.log(error);
+                alertString += addAlert(response,"danger");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            console.log(errorThrown);
+            console.log(textStatus);
+            alertString += addAlert(errorThrown,"danger");
+        }
+      });
+    
+    //If no errors then close modal
+    if(alertString.trim().length < 1){
+        updateOrdersTab();
+        //Close modal by triggering a click on the close button
+        $('#accountModalDeleteOrderClose').trigger('click');
+    } else { //show alert
+        $("#accountDeleteOrdersModalAlert").html(alertString);
+    }
+}
+
+
+
+//function to delete address from table
+function accountModalDeleteSubscription(){
+    var alertString = "";
+    
+    //Global Variables
+    var subscriptionId = $('#accountDeleteSubscriptionID').val();
+    $.ajax(
+      {
+        url : "ajax/accountDeleteSubscriptionsModal.php",
+        type: "POST",
+        data : {subscriptionId:subscriptionId},
+        async: false,
+        success: function(response) {
+            try{
+                //get array from ajax call
+                response = JSON.parse(response);
+                if(response.length > 1){
+                    //Loop through response and create alerts set the index t one because the first is an empty string
+                    for(var index = 1; index < response.length;index++){
+                        alertString += addAlert(response[index],"danger");
+                    }
+                }
+            } catch(error) {
+                console.log(response);
+                console.log(error);
+                alertString += addAlert(response,"danger");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+            console.log(errorThrown);
+            console.log(textStatus);
+            alertString += addAlert(errorThrown,"danger");
+        }
+      });
+    
+    //If no errors then close modal
+    if(alertString.trim().length < 1){
+        //Close modal by triggering a click on the close button
+        $('#accountModalDeletePaymentOptionsClose').trigger('click');
+        updateSubscriptionsTabTable();
+    } else { //show alert
+        $("#accountDeleteSubscriptionsModalAlert").html(alertString);
     }
 }
 
@@ -574,35 +711,50 @@ function accountModalSubscriptions(){
     var alertString = "";
     
     //Global Variables
-    var Id = $('#accountSubscriptionModalSubscriptionCategory').val();
-    $.ajax(
-      {
-        url : "ajax/accountSubscriptionsModal.php",
-        type: "POST",
-        data : {Id:Id},
-        async: false,
-        success: function(response) {
-            try{
-                //get array from ajax call
-                response = JSON.parse(response);
-                if(response.length > 1){
-                    //Loop through response and create alerts set the index t one because the first is an empty string
-                    for(var index = 1; index < response.length;index++){
-                        alertString += addAlert(response[index],"danger");
+    var subscriptionId = $('#accountSubscriptionModalSubscriptionId').val();
+    var categoryId;
+    var addressId = $('#accountSubscriptionModalSubscriptionAddress').val();
+    if(subscriptionId > 0){ //edit
+        categoryId = $("#accountSubscriptionModalSubscriptionCategorySingle").text();
+        
+    } else { //add
+        categoryId = $("#accountSubscriptionModalSubscriptionCategorySelect").val();
+    }
+    
+    if(!addressId > 0){ //if not greater than 0 address is not select or do not have one
+        alertString += addAlert("You must select an address before subscribing","danger");
+    }
+    
+    if(alertString < 1){ //passed checks now make call
+        $.ajax(
+          {
+            url : "ajax/accountSubscriptionsModal.php",
+            type: "POST",
+            data : {subscriptionId:subscriptionId, categoryId:categoryId, addressId:addressId},
+            async: false,
+            success: function(response) {
+                try{
+                    //get array from ajax call
+                    response = JSON.parse(response);
+                    if(response.length > 1){
+                        //Loop through response and create alerts set the index t one because the first is an empty string
+                        for(var index = 1; index < response.length;index++){
+                            alertString += addAlert(response[index],"danger");
+                        }
                     }
+                } catch(error) {
+                    console.log(response);
+                    console.log(error);
+                    alertString += addAlert(response,"danger");
                 }
-            } catch(error) {
-                console.log(response);
-                console.log(error);
-                alertString += addAlert(response,"danger");
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+                console.log(textStatus);
+                alertString += addAlert(errorThrown,"danger");
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(errorThrown);
-            console.log(textStatus);
-            alertString += addAlert(errorThrown,"danger");
-        }
-      });
+          });
+    }
     
     $("#accountSubscriptionsModalAlert").html(alertString);
     
@@ -671,6 +823,9 @@ function updateAddressTabTable(){
       
       //Update the table
       $("#accountAddressTable").html(innerHtml);
+      
+      //Update the subscriptions table because we want them to be consistant
+       updateSubscriptionsTabTable();
 }
 
 //This function updates the html payment options table
@@ -729,9 +884,166 @@ function updatePaymentOptionsTabTable(){
 }
 
 
+//This function updates the html orders tab
+function updateOrdersTab(){
+    var innerHtml = "<br><div class=\"text-center\"><h3>No Orders Found<hr style=\"width:25%;\"></h3></div>";
+    var alertString = "";
+    
+    $.ajax(
+      {
+        url : "ajax/accountGetOrdersInformation.php",
+        type: "GET",
+        async: false,
+        success: function(response) {
+            try{
+                //get array from ajax call
+                response = $.parseJSON(response);
+                
+                if(response[1].length > 1){ //we have rows so loop and show them
+                    innerHtml = ""; //reset to empty string
+                    for(var index = 1; index < response[1].length; index++){ //Loop through order master
+                        innerHtml += "<div class=\"panel panel-default\">  <!-- Start of Order -->";
+                        innerHtml += "    <div class=\"panel-heading form-horizontal\" style=\"padding-bottom:1%;\">";
+                        innerHtml += "        <div class=\"row\">";
+                        innerHtml += "            <div class=\"col col-xs-4 text-left\" style=\"padding-left:5%;\">";
+                        innerHtml += "                <label for=\"accountOrderNumberPanelHeading\" class=\"control-label\">Ref Number:</label>";
+                        innerHtml += "                <span id=\"accountOrderNumberPanelHeading\" name=\"accountOrderNumberPanelHeading\">"+ response[1][index].orderId +"</span>";
+                        innerHtml += "            </div>";
+                        innerHtml += "            <div class=\"col col-xs-4 text-center\">";
+                        innerHtml += "                <label for=\"accountOrderDatePanelHeading\" class=\"control-label\">Date Ordered:</label>";
+                        innerHtml += "                <span id=\"accountOrderDatePanelHeading\" name=\"accountOrderDatePanelHeading\">"+ response[1][index].date +"</span>";
+                        innerHtml += "            </div>";
+                        innerHtml += "            <div class=\"col col-xs-4 text-right\" style=\"padding-right:5%;\">";
+                        
+                        if(response[1][index].showDelete){
+                            innerHtml += "                <button type=\"button\" class=\"btn btn-sm btn-danger btn-create\" data-toggle=\"modal\"  onclick=\"setDeleteOrdersModalValues("+ response[1][index].orderId +", -1);\" data-target=\"#deleteOrdersModal\" value=\"Delete Order Item\" title=\"Delete Order\">Delete Order</button>";
+                        }
+                        
+                        innerHtml += "            </div>";
+                        innerHtml += "        </div>";
+                        innerHtml += "    </div>";
+                        innerHtml += "    <div class=\"panel-body\">";
+                        innerHtml += "        <ul class=\"media-list\">";
+                        
+                        var sum = 0, originalShippingCost = 0;
+                        
+                        for(var innerIndex = 1; innerIndex < response[2].length; innerIndex++){
+                            //Make sure we are on the same order
+                            if(response[2][innerIndex].orderId !== response[1][index].orderId){
+                                continue;
+                            }
+                            sum += (parseFloat(response[2][innerIndex].price) * parseFloat(response[2][innerIndex].quantity));
+                            if(originalShippingCost !== response[2][innerIndex].shippingCost){
+                                originalShippingCost = parseFloat(response[2][innerIndex].shippingCost);
+                                sum += originalShippingCost;
+                            }
+                        
+                            innerHtml += "            <li class=\"media\">";
+                            innerHtml += "                <div class=\"media-left pull-left text-center\">";
+                            innerHtml += "                    <img class=\"media-object\" src=\"images/productsImages/"+ response[2][innerIndex].productId+".jpg\" alt=\""+ response[2][innerIndex].design+"\">";
+                                if(response[2][innerIndex].showDelete){
+                                    innerHtml += "                    <button type=\"button\" class=\"btn btn-sm btn-danger btn-create\" data-toggle=\"modal\" data-target=\"#deleteOrdersModal\" onclick=\"setDeleteOrdersModalValues("+ response[2][innerIndex].orderId +","+ response[2][innerIndex].inventoryId +");\" value=\"Delete Order Item\" title=\"Delete Item\">Delete Item</button>";
+                                }
+                            innerHtml += "                </div>";
+                            innerHtml += "                <div class=\"media-body media-bottom\">";
+                            innerHtml += "                    <div class=\"modal-body form-horizontal\">";
+                            innerHtml += "                        <div class=\"form-group\">";
+                            innerHtml += "                            <label for=\"accountOrderCategory\" class=\"col-xs-2 control-label\">Category:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderCategory\" name=\"accountOrderCategory\">"+ response[2][innerIndex].category+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                            <div class=\"col-xs-1\"></div>";
+                            innerHtml += "                            <label for=\"accountOrderDesign\" class=\"col-xs-3 control-label\">Design:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderDesign\" name=\"accountOrderDesign\">"+ response[2][innerIndex].design+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                        </div>";
+                            innerHtml += "                        <div class=\"form-group\">";
+                            innerHtml += "                            <label for=\"accountOrderType\" class=\"col-xs-2 control-label\">Type:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderType\" name=\"accountOrderType\">"+ response[2][innerIndex].type+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                            <div class=\"col-xs-1\"></div>";
+                            innerHtml += "                            <label for=\"accountOrderSize\" class=\"col-xs-3 control-label\">Size:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderSize\" name=\"accountOrderSize\">"+ response[2][innerIndex].size+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                        </div>";
+                            innerHtml += "                        <div class=\"form-group\">";
+                            innerHtml += "                            <label for=\"accountOrderQuantity\" class=\"col-xs-2 control-label\">Quantity:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderQuantity\" name=\"accountOrderQuantity\">"+ response[2][innerIndex].quantity+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                            <div class=\"col-xs-1\"></div>";
+                            innerHtml += "                            <label for=\"accountOrderPrice\" class=\"col-xs-3 control-label\">Price:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderPrice\" name=\"accountOrderPrice\">$"+ parseFloat(response[2][innerIndex].price).toFixed(2)+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                        </div>";
+                            innerHtml += "                        <div class=\"form-group\">";
+                            innerHtml += "                            <label for=\"accountOrderPrice\" class=\"col-xs-2 control-label\">Shipping:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderPrice\" name=\"accountOrderPrice\">"+ response[2][innerIndex].shipping+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                            <div class=\"col-xs-1\"></div>";
+                            innerHtml += "                            <label for=\"accountOrderShipping\" class=\"col-xs-3 control-label\">Shipping Cost:</label>";
+                            innerHtml += "                            <div class=\"col-xs-3\">";
+                            innerHtml += "                                <div class=\"list-group-item\" id=\"accountOrderShipping\" name=\"accountOrderShipping\">$"+parseFloat(response[2][innerIndex].shippingCost).toFixed(2)+"</div>";
+                            innerHtml += "                            </div>";
+                            innerHtml += "                        </div>";
+                            innerHtml += "                   </div>";
+                            innerHtml += "                </div>";
+                            innerHtml += "            </li>";
+                            innerHtml += "            <hr>";
+                            
+                            } //End Inner Index
+                            
+                        innerHtml += "        </ul>";
+                        innerHtml += "    </div>";
+                        innerHtml += "    <div class=\"panel-footer form-horizontal text-right row\" style=\"padding-right:5%;padding-top:2%;\">";
+                        innerHtml += "        <div class=\"form-group text-center\">";
+                        innerHtml += "            <label for=\"accountOrderAddress\" class=\"col-xs-3 control-label\">Shipping Address:</label>";
+                        innerHtml += "            <div class=\"col-xs-3\">";
+                        innerHtml += "                <div class=\"list-group-item\" id=\"accountOrderAddress\" name=\"accountOrderAddress\">"+ response[1][index].addressLine1+" "+ response[1][index].apartmentNumber+"<br>"+ response[1][index].city+", "+ response[1][index].state+" "+ response[1][index].zipcode+"</div>";
+                        innerHtml += "            </div>";
+                        innerHtml += "            <label for=\"accountOrderPaymentOption\" class=\"col-xs-3 control-label\">Payment Option:</label>";
+                        innerHtml += "            <div class=\"col-xs-3\">";
+                        innerHtml += "                <div class=\"list-group-item\" id=\"accountOrderPaymentOption\" name=\"accountOrderPaymentOption\">"+ response[1][index].type+"<br>"+maskCard(response[1][index].cardNum)+"</div>";
+                        innerHtml += "            </div>";
+                        innerHtml += "        </div>";
+                        innerHtml += "        <label for=\"accountOrderTotalPanelFooter\" class=\"control-label\">Total:</label>";
+                        innerHtml += "        <span id=\"accountOrderTotalPanelFooter\" name=\"accountOrderTotalPanelFooter\">$"+sum.toFixed(2)+"</span>";
+                        innerHtml += "    </div>";
+                        innerHtml += "</div>";
+                        innerHtml += "<br> <!-- End Of Order-->";
+                    } //end master loop
+                }
+            } catch(error) {
+                console.log(response);
+                console.log(error);
+                alertString += addAlert(error,"danger");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(errorThrown);
+            console.log(textStatus);
+        }
+      });
+      
+      //Update the table
+      $("#accountOrdersPanel").html(innerHtml);
+      
+      //Remove the last hr
+      $('.media-list hr:last-child').remove();
+}
+
+
+
+
 //This function updates the html subscriptions table
 function updateSubscriptionsTabTable(){
-    var innerHtml = "<tr><td colspan=\"3\" class=\"text-center\">No Subscriptions Found</td></tr>";
+    var innerHtml = "<tr><td colspan=\"4\" class=\"text-center\">No Subscriptions Found</td></tr>";
+    var addressHtml = "";
     
     $.ajax(
       {
@@ -742,18 +1054,27 @@ function updateSubscriptionsTabTable(){
             try{
                 //get array from ajax call
                 response = $.parseJSON(response);
-                
                 if(response.length > 1){ //we have rows so loop and show them
                     innerHtml = ""; //reset to empty string
-                    for(var index = 1; index < response.length; index++){
-                        innerHtml += "<tr id=\"actionSubscriptionRow_"+ response[index].subscriptionId +"\">"
+                    //This loop is special returns a multi dimensional array
+                    for(var index = 1; index < response[1].length; index++){
+                        innerHtml += "<tr id=\"actionSubscriptionRow_"+ response[1][index].subscriptionId +"\">"
                             innerHtml += "<td class=\"text-center\">";
-                                innerHtml += "<input type=\"button\" class=\"btn btn-danger btn-xs\" data-toggle=\"modal\" data-target=\"#deleteSubscriptionsModal\" value=\"Delete\" data-id=\""+response[index].subscriptionId+"\"/>";
-                                innerHtml += "<span hidden>"+response[index].subscriptionId+"</span>";
+                                innerHtml += "<input type=\"button\" class=\"btn btn-info btn-xs\" data-toggle=\"modal\" data-target=\"#accountSubscriptionsModal\" value=\"Edit \"data-id=\""+response[1][index].subscriptionId+"\"/>";
+                                innerHtml += "<span> </span>";
+                                innerHtml += "<input type=\"button\" class=\"btn btn-danger btn-xs\" data-toggle=\"modal\" data-target=\"#accountDeleteSubscriptionsModal\" value=\"Delete\" data-id=\""+response[1][index].subscriptionId+"\"/>";
+                                innerHtml += "<span hidden>"+response[1][index].subscriptionId+"</span>";
                             innerHtml += "</td>";
-                            innerHtml += "<td name=\"subscriptionColumn\">" + response[index].category + "</td>";
-                            innerHtml += "<td name=\"dateColumn\">" + response[index].date + "</td>";
+                            innerHtml += "<td name=\"subscriptionColumn\">" + response[1][index].category + "</td>";
+                            innerHtml += "<td name=\"addressColumn\">"+response[1][index].addressLine1 + "<br>"+response[1][index].city+", "+response[1][index].state+"  "+response[1][index].zipcode;
+                                innerHtml += "<span hidden>"+response[1][index].addrId+"</span>";
+                            innerHtml += "</td>";
+                            innerHtml += "<td name=\"dateColumn\">" + response[1][index].date + "</td>";
                         innerHtml += "</tr>";
+                    }
+                    //Loop through addresses
+                    for(var index = 1; index < response[2].length; index++){
+                        addressHtml += "<option value="+response[2][index].addrId+">"+response[2][index].addressLine1+"  "+response[2][index].city+",  "+response[2][index].state+"  "+response[2][index].zipcode+"</option>";
                     }
                 }
             } catch(error) {
@@ -770,5 +1091,5 @@ function updateSubscriptionsTabTable(){
       
       //Update the table
       $("#accountSubscriptionsTable").html(innerHtml);
+      $("#accountSubscriptionModalSubscriptionAddress").html(addressHtml);
 }
-

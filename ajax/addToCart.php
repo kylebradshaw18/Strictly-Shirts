@@ -12,7 +12,7 @@
         require_once('../Globals/connection.php');
         //First Check if the user already has that subscription
         $results = $conn->query("SELECT `cartId` FROM `carts` WHERE `personId` = ".$_SESSION['personId']." AND `productId` = ".$productId);
-        if(!results){ //Something Went wrong on the update
+        if(!$results){ //Something Went wrong on the update
             array_push($returnValue, "ERROR: Connection issue, Please call support");
         }
         

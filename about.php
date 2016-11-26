@@ -36,6 +36,6 @@
 
 
 
-    buildFooter(false); //Builds the Footer
+    buildFooter1(false); //Builds the Footer
 
     ?>

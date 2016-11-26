@@ -11,7 +11,7 @@
     require_once('../Globals/connection.php');
     
     $sql =  "SELECT `payId`, `personId`, `cardNum`, `csc`, `type`, `isPrimaryPayment`, `expirationMonth`, `expirationYear`, `nameOnCard` FROM `paymentmethods` ";
-    $sql .= " WHERE `personId` = ".$_SESSION['personId']. " ORDER BY `isPrimaryPayment` DESC, `type`, `expirationYear` DESC, `expirationMonth` DESC, `cardNum`";
+    $sql .= " WHERE `personId` = ".$_SESSION['personId']." AND `status` = 'ACTIVE' ORDER BY `isPrimaryPayment` DESC, `type`, `expirationYear` DESC, `expirationMonth` DESC, `cardNum`";
     $results = $conn->query($sql);
     
     while($row = $results->fetch_assoc()) {

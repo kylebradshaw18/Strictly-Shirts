@@ -51,3 +51,19 @@ function getUserId(){
     
     return returnValue;
 }
+
+
+/**
+ * This function masks a card number so only the last 4 digits are visible
+ */
+function maskCard(cardNumber){
+    var lengthCardNumber = cardNumber.length;
+    var lengthCardNumberMask = lengthCardNumber - 4;
+    var lastDigits = cardNumber.substring(lengthCardNumberMask, lengthCardNumber);
+    var newCardNumber = "";
+    for(var index = 0; index < lengthCardNumberMask; index++){
+        newCardNumber += "*";
+    }
+    newCardNumber += lastDigits;
+    return newCardNumber;
+}

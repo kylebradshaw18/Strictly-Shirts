@@ -141,7 +141,7 @@
 			<!-- Submit Area -->
 			<div class="register-but" align=center>
 				<input type="submit" value="Create User">
-				<div class="clearfix"></div>
+				<div class="clearfix"> </div>
 			</div>
 		</div>
 	</div>
