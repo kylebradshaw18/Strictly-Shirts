@@ -38,7 +38,7 @@
             $sql .= " `cardNum` = '".$cardNumber."'";
             
             $results = $conn->query($sql);
-            if(!results){ //Something Went wrong on the update
+            if(!$results){ //Something Went wrong on the update
                 array_push($returnValue, "ERROR: Connection issue, Please call support");
             }
             
@@ -63,7 +63,7 @@
             $sql .=  " WHERE `personId` = ".$_SESSION['personId']." AND `payId` = ".$payId;
             
             $results = $conn->query($sql);
-            if(!results){ //Something Went wrong on the update
+            if(!$results){ //Something Went wrong on the update
                 array_push($returnValue, "ERROR: Connection issue, Please call support");
             }
         }

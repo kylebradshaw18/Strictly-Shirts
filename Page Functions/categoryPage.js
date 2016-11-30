@@ -3,6 +3,7 @@ function productModalQuantity(type){
 }
 
 function setModalValues(id){
+    
     //first reset alerts on the modal
     $("#productsModalAlert").html("");
     //Disable and hide button then show if user is logged in
@@ -18,6 +19,7 @@ function setModalValues(id){
     
     //Check if user is signed in
     if(parseInt(getUserId()) < 1){
+        
         //Tell the user they must log in first before adding items to cart
         $("#productsModalAlert").html(addAlert("You must be signed in to add items to your cart","info"));
         $('#productModalSignIn').attr('disabled',false);
@@ -26,6 +28,7 @@ function setModalValues(id){
     } else {
         //User is logged in so we can 
         //show add to cart button
+        $("#productsModalAlert").html(addAlert("You are signed in","info"));
         $('#productModalAddToCart').attr('disabled',false);
         $("#productModalAddToCart").show();
     }

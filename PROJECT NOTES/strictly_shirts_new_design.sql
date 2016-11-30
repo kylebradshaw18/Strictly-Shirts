@@ -338,6 +338,42 @@ INSERT INTO `paymentmethods` (`payId`, `personId`, `cardNum`, `csc`, `type`, `is
 
 -- --------------------------------------------------------
 
+
+--
+-- Table structure for table `contact`
+--
+
+CREATE TABLE IF NOT EXISTS `contact` (
+  `contactId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) DEFAULT NULL,
+  `email` varchar(75) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `date` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`contactId`),
+  KEY `ContactPerson_idx` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `newsfeed`
+--
+
+CREATE TABLE IF NOT EXISTS `newsletter` (
+  `newsletterId` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(75) DEFAULT NULL,
+  `date` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`newsletterId`),
+  KEY `NewsLetterPerson_idx` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+
+
+
 --
 -- Table structure for table `people`
 --

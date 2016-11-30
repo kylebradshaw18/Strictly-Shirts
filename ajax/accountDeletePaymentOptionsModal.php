@@ -10,9 +10,9 @@
         require_once('../Globals/connection.php');
         
         //First check if the user already has that address
-        $sql =  "DELETE FROM `paymentmethods` WHERE `payId` = ".trim($_POST['paymentId']);
+        $sql =  "UPDATE `paymentmethods` SET `status` = 'DELETED' WHERE `payId` = ".trim($_POST['paymentId']);
         $results = $conn->query($sql);
-        if(!results){ //Something Went wrong on the update
+        if(!$results){ //Something Went wrong on the update
             array_push($returnValue, "ERROR: Connection issue, Please call support");
         }
             

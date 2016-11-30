@@ -59,13 +59,11 @@
                     echo "<tr>";
                     echo "<td class='ring-in'><a href='#' class='at-in'><img src='images/productsImages/". $associatedProduct['productId'].".jpg' class='img-responsive' alt=''></a>";
                     echo "<div class='sed'>";
-                    //We should probably add a name and description to shirts in the database.
                     echo "<h5> Shirt ". $associatedProduct['productId']."</h5>";
                     echo "<p>A very cool shirt. It will grant you many friends. </p>";
                     echo "</div>";
                     echo "<div class='clearfix'> </div></td>";
                     echo "<td class='check'><input id='quantity-".$row['cartId'] . "' type='text' value='" . $row['quantity'] . "' onfocus=\"this.value='';\" onblur=\"updateSubtotal(".$row['cartId'].",".$associatedProduct['price']."); \"></td>";		
-                    //Also maybe we should change the format of stored prices?
                     echo "<td>$ ".$associatedProduct['price'].".00</td>";
                     echo "<td id='subTotal-".$row['cartId'] ."'>$ ".($associatedProduct['price'] * $row['quantity']) .".00 </td>";
                     echo "</tr>";

@@ -56,7 +56,6 @@
     			
     			//Gets the id from the row that was just inserted
     			$addressId = $conn->insert_id;
-    			array_push($returnValue, $addressId);
             }
         } else { //edit
             //First check if the user already has that address
@@ -65,7 +64,7 @@
             $sql .=  " WHERE `personId` = ".$_SESSION['personId']." AND `addrId` = ".$addressId;
             
             $results = $conn->query($sql);
-            if(!results){ //Something Went wrong on the update
+            if(!$results){ //Something Went wrong on the update
                 array_push($returnValue, "ERROR: Connection issue, Please call support");
             }
         }

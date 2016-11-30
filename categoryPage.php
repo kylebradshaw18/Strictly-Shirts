@@ -10,6 +10,7 @@
 	require 'Globals/buildHTML.php';
 	
 	
+	
 	buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
 	buildHeader(); //Builds the Header and Navigation Bar
 
@@ -19,7 +20,14 @@ if (isset($_GET['id'])) {
 	
 	//Use this to link to the conenctions page for the database functions
 	require 'Globals/connection.php';
+	
+	$results = $conn->query("SELECT `sizeId`, `size` FROM `sizes` ORDER BY `sizeId`");
+    while($row = $results->fetch_assoc()) {
+        $size .= "<option value=\"". $row['sizeId'] ."\">". $row['size'] ."</option>";
+    }
+    
 	?>
+	
 	<script src="./Page Functions/categoryPage.js"></script>
     <div class="container">
     <!-- Selection Bar -->
@@ -79,39 +87,8 @@ if (isset($_GET['id'])) {
                 $n = 4; // Each Nth iteration would be a new table row
                 while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
                      $productId = $row["productId"];
-                     $typeId = $row["typeId"];
-                     $colorId = $row["color"];
-                     $sizeId = $row["sizeId"];
                      $designId = $row["designId"];
-                     $supplierId = $row["supplierId"];
-                     $quantity = $row["quantity"];
-	        		 $price = $row["price"];
 	        		 
-                    
-                    //get the type for a particular product
-    $queryType =   "SELECT types.type ".
-                        "FROM products,types ".
-                        "WHERE products.typeId = types.typeId ".
-                        "AND products.productId = '$productId'";
-
-    $resType = $conn->query($queryType);
-                      $rowType = mysqli_fetch_array($resType);
-                      $type = $rowType["type"];
-
-
-    /**
-    get the size for a particular product
-    $querySize =   "SELECT sizes.size ".
-                        "FROM products,sizes ".
-                        "WHERE products.sizeId = sizes.sizeId ".
-                        "AND products.productId = '$productId'";
-
-    $resSize = $conn->query($querySize) or die(mysqli_error());
-    while ($rowSize = mysqli_fetch_array($resSize)) {
-          $size = $rowSize["size"];
-
-    }*/
-    
 
     //get the design for a particular product
     $queryDesign =   "SELECT designs.design ".
@@ -133,6 +110,17 @@ if (isset($_GET['id'])) {
     $resCategory = $conn->query($queryCategory);
                       $rowCategory = mysqli_fetch_array($resCategory);
                       $category = $rowCategory["category"];
+                      
+    
+     //get details for a particular product
+     $queryDetails = "SELECT inventory.quantity, inventory.price ".
+                     "FROM inventory,products ".
+                     "WHERE inventory.productId = '$productId' ORDER BY inventory.sizeId LIMIT 1";
+                     $resDetails = $conn->query($queryDetails);
+                     $rowDetails = mysqli_fetch_array($resDetails, MYSQL_ASSOC);
+                     $quantity = $rowDetails["quantity"];
+                     $price = $rowDetails["price"];
+                     
 
                     if ($c % $n == 0 && $c != 0) { // If $c is divisible by $n...
                         echo '<div class="row"></div>';
@@ -151,10 +139,6 @@ if (isset($_GET['id'])) {
           <h3><a href="#"><?php echo $design ?></a></h3>
           <div class="price">
             <h5 class="productPrice">$<span id="productPrice"><?php echo number_format($price, 2) ?></span></h5>
-            <input type="hidden" name="ShirtName" value="Shirt6">
-            <input type="hidden" name="price" value="300">
-            <input type="hidden" name="img-file" value="pi8.png">
-            <input type="hidden" name="detail" value="Green  shirt">
             <button type="button" class="form-control btn btn-sm btn-primary" data-toggle="modal" onclick="setModalValues(<?php echo $productId ?>)" data-target="#productModal<?php echo $productId ?>" value="Search" title="View Product">View Product</button>
           </div>
         </div>

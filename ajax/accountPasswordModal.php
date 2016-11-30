@@ -38,7 +38,7 @@
         if($results ->num_rows > 0){ //got a row so now update the password
             $updateSQL =  "UPDATE `people` SET `password` = ENCRYPT('".$newPassword."','password') WHERE `personId` = ".$_SESSION['personId'];
             $results = $conn->query($updateSQL);
-            if(!results){ //Something Went wrong on the update
+            if(!$results){ //Something Went wrong on the update
                 array_push($returnValue, "ERROR: Connection issue, Please call support");
             }
         } else { //no rows so invalid password

@@ -24,30 +24,51 @@ function addAlert(stringAlert, type){
     return returnString;
 }
 
-
-/** Function that gets the users ID
- * If no id then it returns 0
+/**
+ * This function masks a card number so only the last 4 digits are visible
  */
-function getUserId(){
-    var returnValue = 0;
-    $.ajax(
-      {
-        url : "ajax/checkLogin.php",
-        type: "GET",
-        async: false,
-        success: function(response) {
-            //get array from ajax call
-            response = JSON.parse(response);
-            if(response > 0){
-                returnValue = response;
+function maskCard(cardNumber){
+    var lengthCardNumber = cardNumber.length;
+    var lengthCardNumberMask = lengthCardNumber - 4;
+    var lastDigits = cardNumber.substring(lengthCardNumberMask, lengthCardNumber);
+    var newCardNumber = "";
+    for(var index = 0; index < lengthCardNumberMask; index++){
+        newCardNumber += "*";
+    }
+    newCardNumber += lastDigits;
+    return newCardNumber;
+}
+
+
+function subscribe(value){
+    var value = $('#newsLetterEmail').val();
+    var alertString = "";
+    if(value.trim().length > 0){
+        $.ajax(
+          {
+            url : "ajax/newsLetter.php",
+            type: "POST",
+            data : {email:value},
+            async: true,
+            success: function(response) {
+                //get array from ajax call
+                response = JSON.parse(response);
+                if(response.length > 1){
+                    //Loop through response and create alerts set the index t one because the first is an empty string
+                    for(var index = 1; index < response.length;index++){
+                        alertString += addAlert(response[index],"danger");
+                    }
+                } 
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+                console.log(errorThrown);
+                console.log(textStatus);
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-            console.log(errorThrown);
-            console.log(textStatus);
-        }
-      });
+          });
+    } else {
+        alertString += (addAlert("Email can not be blank","danger"));
+    }
     
-    return returnValue;
+    $('#newsLetterAlert').html(alertString);
 }

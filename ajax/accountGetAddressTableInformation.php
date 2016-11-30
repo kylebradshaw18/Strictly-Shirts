@@ -11,7 +11,7 @@
     require_once('../Globals/connection.php');
     
     $sql =  "SELECT `addrId`, `addressLine1`, `apartmentNumber`, `city`, `state`, `zipcode`, `isPrimaryAddress` FROM `addresses` ";
-    $sql .= " WHERE `personId` = ".$_SESSION['personId']. " ORDER BY `isPrimaryAddress` DESC, `state`, `city`, `zipcode`, `addressLine1`";
+    $sql .= " WHERE `personId` = ".$_SESSION['personId']." AND `status` = 'ACTIVE' ORDER BY `isPrimaryAddress` DESC, `state`, `city`, `zipcode`, `addressLine1`";
     $results = $conn->query($sql);
     
     while($row = $results->fetch_assoc()) {
