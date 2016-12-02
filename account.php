@@ -42,7 +42,7 @@
     		//Want to have a distinct email address so check before updating row
     		$results = $conn->query("SELECT * FROM `people` WHERE `email` = '".$email."' AND `email` <> (SELECT `email` FROM `people` WHERE `personId` = ".$_SESSION['personId'].")");
 		    if($results ->num_rows > 0){
-		        $errorHtml.= addAlert("Sorry that email address is already taken");
+		        $errorHtml.= addAlert("Sorry that email address is already taken", "danger");
 		    }
     		
     		//Set the update script

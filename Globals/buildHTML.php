@@ -1,53 +1,51 @@
 <?php
     //Need to start the session to use the session variable
     session_start();
-    
-    //require_once('Globals/globalFunctions.php');
     require_once('globalFunctions.php');
 
     function buildHTMLHeadLinks($autoSlider = 'true'){ ?>
         <!DOCTYPE html>
-            <html>
-                <head>
-                    <title>Stictly Shirts</title>
-                    <link href="css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
-                    <script src="js/jquery.min.js"></script>
-                    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />  
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                    <meta name="keywords" content="Strictly Shirts" />
-                    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-                    <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-                    <link href='//fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/simpleCart.min.js"> </script>
-                    <script src="js/jquery.mask.js"> </script>
-                    <script src="Globals/globalFunctionsJavascript.js"></script>
-                    <!-- Slide -->
-                    <script src="js/responsiveslides.min.js"></script>
-                    <script>
-                        $(function () {
-                            $("#slider").responsiveSlides({
-                                auto: "<?php echo $autoSlider;?>",
-                                speed: 500,
-                                namespace: "callbacks",
-                                pager: true
-                            });
+        <html>
+            <head>
+                <title>Stictly Shirts</title>
+                <link href="css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
+                <script src="js/jquery.min.js"></script>
+                <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />  
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <meta name="keywords" content="Strictly Shirts" />
+                <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+                <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+                <link href='//fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+                <script src="js/bootstrap.min.js"></script>
+                <script src="js/simpleCart.min.js"> </script>
+                <script src="js/jquery.mask.js"> </script>
+                <script src="Globals/globalFunctionsJavascript.js"></script>
+                <!-- Slide -->
+                <script src="js/responsiveslides.min.js"></script>
+                <script>
+                    $(function () {
+                        $("#slider").responsiveSlides({
+                            auto: "<?php echo $autoSlider;?>",
+                            speed: 500,
+                            namespace: "callbacks",
+                            pager: true
                         });
-                    </script>
-                <?php if(1 === 0){?>
-                    <!-- Start Animation-Effect -->
-                    <link href="css/animate.min.css" rel="stylesheet"> 
-                    <script src="js/wow.min.js"></script>
-                    <script> new WOW().init(); </script>
-                    <!-- End Animation-Effect -->
-                <?php } ?>
-                    <script>
-                        $(document).ready(function(){ $('#loadingDiv').hide(); });
-                        $(document).ajaxStart(function() { $('#loadingDiv').show();})
-                                   .ajaxStop(function() { $('#loadingDiv').hide();});
-                    </script>
-                </head>
+                    });
+                </script>
+            <?php if(1 === 0){?>
+                <!-- Start Animation-Effect -->
+                <link href="css/animate.min.css" rel="stylesheet"> 
+                <script src="js/wow.min.js"></script>
+                <script> new WOW().init(); </script>
+                <!-- End Animation-Effect -->
+            <?php } ?>
+                <script>
+                    $(document).ready(function(){ $('#loadingDiv').hide(); });
+                    $(document).ajaxStart(function() { $('#loadingDiv').show();})
+                               .ajaxStop(function() { $('#loadingDiv').hide();});
+                </script>
+            </head>
 <?php }
 
     function buildHeader(){
@@ -78,7 +76,7 @@
                                     }
                                     $cartTotal = getCartSum($personId);
                                 ?>
-                                        $<?php echo number_format((float)$cartTotal, 2, '.', '');?>
+                                        $ <?php echo number_format((float)$cartTotal, 2, '.', '');?>
                                     </div>
                                     <a href="cart.php">
                                         <img  src="images/cart.png" alt="View Cart"/>
@@ -122,19 +120,23 @@
                                         <li><a href="index.php">Home</a></li>
                                         <li><a href="about.php">About</a></li>
                                         <li class="dropdown mega-dropdown active">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products<span class="caret"></span></a>
+                                            <a href="products.php" class="dropdown-toggle" data-toggle="dropdown">Products<span class="caret"></span></a>
                                             <div class="dropdown-menu mega-dropdown-menu">
                                                 <div class="container-fluid">
                                                     <div class="tab-content">
                                                         <div class="tab-pane active" id="men">
                                                             <ul class="nav-list list-inline">
-                                                                <li><a href="products.php"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=All&w=150&h=132" class="img-responsive" alt=""/></a></li>
-                                                                <li><a href="categoryPage.php?id=1"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=Marvel&w=150&h=132" class="img-responsive" alt=""/></a></li>
-                                                                <li><a href="categoryPage.php?id=2"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=Sports&w=150&h=132" class="img-responsive" alt=""/></a></li>
-                                                                <li><a href="categoryPage.php?id=3"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=Video Games&w=150&h=132" class="img-responsive" alt=""/></a></li>
-                                                                <li><a href="categoryPage.php?id=4"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=Music&w=150&h=132" class="img-responsive" alt=""/></a></li>
-                                                                <li><a href="categoryPage.php?id=5"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=Custom Order&w=150&h=132" class="img-responsive" alt=""/></a></li>
-                                                                <li><a href="categoryPage.php?id=6"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=Memes&w=150&h=132" class="img-responsive" alt=""/></a></li>
+                                                                <li><a href="products.php"><img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=All&w=150&h=132" class="img-responsive" alt="All Categories"/></a></li>
+                                                                <?php //get the top 6 categories for the products page
+                                                                    $globalFunctionsConn = openDBConnection();
+                                                                    $results = $globalFunctionsConn->query("SELECT `category`, `categoryId` FROM `categories` WHERE `category` <> 'Custom Order'  ORDER BY `category` LIMIT 5");
+                                                                    while($row = $results->fetch_assoc()) { ?>
+                                                                        <li>
+                                                                            <a href="products.php?category=<?php echo $row['categoryId']; ?>">
+                                                                                <img src="https://placeholdit.imgix.net/~text?txtsize=30&txt=<?php echo $row['category']; ?>&w=150&h=132" class="img-responsive" alt=""/>
+                                                                            </a>
+                                                                        </li>
+                                                                <?php } ?>
                                                             </ul>
                                                        </div>
                                                     </div>
@@ -144,7 +146,6 @@
             
     <?php if(isset($_SESSION['personId']) && !empty($_SESSION['personId'])) { ?>
                                         <li><a href="account.php">Account</a></li>
-                                        <!--<li><a href="logout.php">Log Out</a></li>-->
     <?php } else { //Else show the sign in link ?>
                                         <li><a href="signin.php">Sign In</a></li>
     <?php } ?>
@@ -161,15 +162,24 @@
                         <div id="small-dialog" class="mfp-hide">
                             <div class="search-top">
                                 <div class="login">
-                                    <form action="#" method="post">
-                                        <input type="submit" value="">
-                                        <input type="text" name="search" value="Type something..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">		
-                                    </form>
+                                    <input type="text" size="60" onkeyup="showResult(this.value)" name="search" value="" placeholder="Search Something....." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">	
                                 </div>
-                                <p>	Shopping</p>
+                                <div id="showResultList" style="padding-top:2%;"></div>
                             </div>				
                         </div>
                         <script>
+                            <?php //Build javascript array for the search
+                                $sql  = " SELECT 'category' AS `type`, `categoryId` AS `id`, `category` AS `name` FROM `categories` WHERE `category` <> 'Custom Order' ";
+                                $sql .= " UNION ";
+                                $sql .= " SELECT 'design' AS `type`, `designId` AS `id`, `design` AS `name` FROM `designs` ORDER BY `type`, `name`, `id` ";
+                                $searchArray = array();
+                                $results = $globalFunctionsConn->query($sql);
+                                while($row = $results->fetch_assoc()) { 
+                                    $searchArray[] = $row;
+                                }
+                            ?>
+                            var searchList = <?php echo json_encode($searchArray); ?>;
+                            
                             $(document).ready(function() {
                                 $('.popup-with-zoom-anim').magnificPopup({
                                     type: 'inline',
@@ -183,6 +193,25 @@
                                     mainClass: 'my-mfp-zoom-in'
                                 });                                                        
                             });
+                            
+                            function showResult(value){
+                                var searchResultHtmlString = "";
+                                value = value.trim().toLocaleLowerCase();
+                                if(value.length > 0){
+                                    //loop through searchs
+                                    for(var index = 0; index < searchList.length; index++){
+                                        //If they match then show it
+                                        if(searchList[index].name.toLocaleLowerCase().includes(value)){
+                                            searchResultHtmlString += buildSearchList(searchList[index]);
+                                        }
+                                    }
+                                }
+                                $('#showResultList').html(searchResultHtmlString);
+                            }
+                            
+                            function buildSearchList(row){
+                                return "<a href=\"products.php?"+row.type+"="+row.id+"\">"+row.name+"</a><br>";
+                            }
                         </script>		
                     </div>
                 </div>
@@ -209,54 +238,80 @@
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
-                                <div class="col-md-6 top-footer1 animated wow fadeInRight" data-wow-delay=".5s">
-                                    <h3>Newsletter</h3>
-                                    <form action="#" method="post">
-                                    <input type="text" name="email" value="" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
-                                    <input type="submit" value="SUBSCRIBE">
-                                    </form>
-                                </div>
-                                <div class="clearfix"> </div>	
+                            <div class="col-md-6 top-footer1 animated wow fadeInRight" data-wow-delay=".5s">
+                                <div id="newsLetterAlert"></div>
+                                <h3>Newsletter</h3>
+                                <?php //if signed in get the users email address
+                                    $newsLetterEmail = "";
+                                    if(isset($_SESSION['personId']) && !empty($_SESSION['personId'])) {
+                                        $globalFunctionsConn = openDBConnection();
+                                        $results = $globalFunctionsConn->query("SELECT `email` FROM `people` WHERE `personId` = ".$_SESSION['personId']);
+                                        if($results ->num_rows > 0){
+                                            $newsLetterEmail = $results->fetch_assoc()['email'];
+                                    	}
+                                    }
+                                ?>
+                                <input type="email" name="email" value="<?php echo $newsLetterEmail; ?>" id="newsLetterEmail" maxlength="75" placeholder="Email Address" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
+                                <input type="submit" onclick="subscribe();" value="SUBSCRIBE">
+                            </div>
+                            <div class="clearfix"> </div>	
                             </div>	
                         </div>
             <?php } //End Show Subscribe If ?>
                     
                     <div class="footer-bottom">
-                        <div class="container">
-                        <div class="col-md-3 footer-bottom-cate animated wow fadeInLeft" data-wow-delay=".5s">
-                        <h6>Categories</h6>
-                        <ul>
-                        <li><a href="#">Men Shirts</a></li>
-                        <li><a href="#">Women Shirts</a></li>
-                        <li><a href="#">Kids Shirts</a></li>
-                        </ul>
-                        </div>
-                        <div class="col-md-3 footer-bottom-cate animated wow fadeInLeft" data-wow-delay=".5s">
-                        <h6>Feature Projects</h6>
-                        <ul>
-                        <li><a href="#">Dignissim purus</a></li>
-                        <li><a href="#">Curabitur sapien</a></li>
-                        <li><a href="#">Tempus pretium</a></li>
-                        </ul>
-                        </div>
-                        <div class="col-md-3 footer-bottom-cate animated wow fadeInRight" data-wow-delay=".5s">
-                        <h6>Top Brands</h6>
-                        <ul>
-                        <li><a href="#">Tempus pretium</a></li>
-                        <li><a href="#">Curabitur sapien</a></li>
-                        <li><a href="#">Dignissim purus</a></li>
-                        </ul>
-                        </div>
-                        <div class="col-md-3 footer-bottom-cate cate-bottom animated wow fadeInRight" data-wow-delay=".5s">
-                        <h6>Our Address</h6>
-                        <ul>
-                        <li><a href="https://www.google.com/maps/place/Marist/@41.7224565,-73.9363091,17z/data=!3m1!4b1!4m5!3m4!1s0x89dd3dfdfc580a91:0x6db18d47ff70fe6c!8m2!3d41.7224565!4d-73.9341204"  target="_blank"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>Address : 3399 North Road, Poughkeepsie, NY 12601</a></li>
-                        <li><a href="mailto:StrictlyShirtsMarist@gmail.com"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>Email : StrictlyShirtsMarist@gmail.com</a></li>
-                        <li><a href="tel:+1-845-575-3000"><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>Phone : (845) 575-3000</a></li>
-                        </ul>
-                        </div>
+                        <div class="container text-centered">
+                            <div class="col-md-2 footer-bottom-cate animated wow fadeInLeft" data-wow-delay=".5s">
+                            </div>
+                            <div class="col-md-3 footer-bottom-cate animated wow fadeInLeft" data-wow-delay=".5s">
+                                <h6>Top Categories</h6>
+                                <ul>
+                                <?php //Grab the top 4 categories 
+                                    $globalFunctionsConn = openDBConnection();
+                                    $sql  = " SELECT COUNT(`categories`.`categoryId`) AS `total`, `categories`.`category`, `categories`.`categoryId` ";
+                                    $sql .= " FROM `categories` INNER JOIN `products` ON `categories`.`categoryId` = `products`.`categoryId` ";
+                                    $sql .= "                   INNER JOIN `inventory` ON `products`.`productId` = `inventory`.`productId` ";
+                                    $sql .= "                   INNER JOIN `orderdetails` ON `inventory`.`inventoryId` = `orderdetails`.`inventoryId` ";
+                                    $sql .= " WHERE `category` <> 'Custom Order' ";
+                                    $sql .= " GROUP BY `categories`.`category`, `categories`.`categoryId` ";
+                                    $sql .= " ORDER BY `total` DESC, `categories`.`category` ";
+                                    $sql .= " LIMIT 4 ";
+                                    $results = $globalFunctionsConn->query($sql);
+                                    while($row = $results->fetch_assoc()) { 
+                                ?>
+                                    <li><a href="products.php?category=<?php echo $row['categoryId']; ?>"><?php echo $row['category']; ?></a></li>
+                                <?php } ?>
+                                </ul>
+                            </div>
+                            <div class="col-md-3 footer-bottom-cate animated wow fadeInRight" data-wow-delay=".5s">
+                                <h6>Top Designs</h6>
+                                <ul>
+                                <?php //Grab the top 3 designs 
+                                    $sql  = " SELECT COUNT(`designs`.`designId`) AS `total`, `designs`.`design`, `designs`.`designId` ";
+                                    $sql .= " FROM `designs` INNER JOIN `products` ON `designs`.`designId` = `products`.`designId` ";
+                                    $sql .= "                INNER JOIN `inventory` ON `products`.`productId` = `inventory`.`productId` ";
+                                    $sql .= "                INNER JOIN `orderdetails` ON `inventory`.`inventoryId` = `orderdetails`.`inventoryId` ";
+                                    $sql .= " GROUP BY `designs`.`design`, `designs`.`designId` ";
+                                    $sql .= " ORDER BY `total` DESC, `designs`.`design` ";
+                                    $sql .= " LIMIT 4 ";
+                                    $results = $globalFunctionsConn->query($sql);
+                                    while($row = $results->fetch_assoc()) { 
+                                    ?>
+                                        <li><a href="products.php?design=<?php echo $row['designId']; ?>"><?php echo $row['design']; ?></a></li>
+                                <?php } ?>
+                                </ul>
+                            </div>
+                            <div class="col-md-3 footer-bottom-cate cate-bottom animated wow fadeInRight" data-wow-delay=".5s">
+                                <h6>Our Address</h6>
+                                <ul>
+                                    <li><a href="https://www.google.com/maps/place/Marist/@41.7224565,-73.9363091,17z/data=!3m1!4b1!4m5!3m4!1s0x89dd3dfdfc580a91:0x6db18d47ff70fe6c!8m2!3d41.7224565!4d-73.9341204"  target="_blank"><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>Address : 3399 North Road, Poughkeepsie, NY 12601</a></li>
+                                    <li><a href="mailto:StrictlyShirtsMarist@gmail.com"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>Email : StrictlyShirtsMarist@gmail.com</a></li>
+                                    <li><a href="tel:+1-845-575-3000"><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>Phone : (845) 575-3000</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-1 footer-bottom-cate animated wow fadeInLeft" data-wow-delay=".5s">
+                            </div>
                         <div class="clearfix"> </div>
-                        
                         </div>
                     </div>
                 </div>

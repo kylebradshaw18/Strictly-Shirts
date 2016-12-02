@@ -1,0 +1,12 @@
+/* USE THIS TO SEND THE USER TO THE SIGN IN PAGE AND IT PASSES IN WHERE WE CAME FROM SO IT WILL SEND US RIGHT BACK
+    //Check if session variable is set  if not then go to sign in page
+	if(!isset($_SESSION['personId']) || empty($_SESSION['personId'])) {
+		//navigate to the users account
+		header('Location: signin.php?navigation='.substr($_SERVER['REQUEST_URI'],1,strlen($_SERVER['REQUEST_URI']) - 1));
+	}
+	*/
+	
+	
+	
+	All you have to do is copy this at the start of the page and it will send the user back to the sign in page and pass the current page and its query string as a query string which will then in return 
+	send the user back to that page after they have signed in.

@@ -569,7 +569,8 @@ ul.callbacks_tabs.callbacks1_tabs {
 	font-family: 'Poiret One', cursive;
 	font-weight:700;
 }
-.top-footer1 input[type="text"] {
+.top-footer1 input[type="text"],
+.top-footer1 input[type="email"]{
   width: 65%;
   padding: 0.6em;
   outline: none;
@@ -1725,7 +1726,8 @@ ul.nav_1 li {
 .top-footer1 {
   margin: 2em 0 0;
 }
-.top-footer1 input[type="text"] {
+.top-footer1 input[type="text"],
+.top-footer1 input[type="email"]{
     width: 70%;
 }
 .top-footer1 input[type="submit"] {
@@ -2015,7 +2017,8 @@ select.in-drop, select.in-drop1 {
 .top-footer1 input[type="submit"] {
     width: 30%;
 }
-.top-footer1 input[type="text"] {
+.top-footer1 input[type="text"],
+.top-footer1 input[type="email"]{
     width: 68%;
 }
 .footer-bottom {
@@ -2154,7 +2157,8 @@ select.in-drop, select.in-drop1 {
 .top-footer1 h3 {
   font-size: 1.5em;
 }
-.top-footer1 input[type="text"] {
+.top-footer1 input[type="text"],
+.top-footer1 input[type="email"]{
     width: 70%;
 }
 .top-footer1 input[type="submit"] {
@@ -2501,7 +2505,8 @@ p.log {
 .top-footer1 h3 {
   font-size: 1.3em;
 }
-.top-footer1 input[type="text"] {
+.top-footer1 input[type="text"],
+.top-footer1 input[type="email"] {
   width: 65%;
   padding: 0.4em;
 }
@@ -2789,6 +2794,14 @@ th {
 	font-family:'Poiret One', cursive;
 	font-weight:700;
 }
+.cart-header{
+	color:#fa03bb;
+	font-size:3em;
+	margin:0 0 1em;
+	text-align:center;
+	font-family:'Poiret One', cursive;
+	font-weight:700;
+}
 .account-but{
 	margin-top:1em;
 }
@@ -2844,4 +2857,10 @@ th {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+
+/** CART PAGE **/
+.check-out table tbody tr td div{
+    padding-bottom: 1%;
 }

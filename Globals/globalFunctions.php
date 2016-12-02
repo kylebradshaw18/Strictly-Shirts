@@ -14,10 +14,22 @@
         return $results->fetch_assoc()['firstName'];
     }
     
+    //Function that gets the persons first name
+    function getPersonsEmail($personId){
+        $globalFunctionsConn = openDBConnection();
+        $results = $globalFunctionsConn->query("SELECT `email` FROM `people` WHERE `personId` = ".$personId . " LIMIT 1");
+        if($results ->num_rows > 0){
+            return $results->fetch_assoc()['email'];
+    	}
+    	
+    	return "";
+        
+    }
+    
     //Function that gets the persons total from the cart
     function getCartSum($personId){
         $sum = 0;
-        $sql = "SELECT `cart`.`quantity`, `inventory`.`price` FROM `cart` INNER JOIN `inventory` ON `cart`.`inventoryId` = `inventory`.`inventoryId` WHERE `personId` = ".$personId;
+        $sql = "SELECT `carts`.`quantity`, `inventory`.`price` FROM `carts` INNER JOIN `inventory` ON `carts`.`inventoryId` = `inventory`.`inventoryId` WHERE `personId` = ".$personId;
         $globalFunctionsConn = openDBConnection();
         $results = $globalFunctionsConn->query($sql);
         
@@ -28,6 +40,18 @@
     	} 
         
         return $sum;
+    }
+    
+    //Function that runs a query and returns the results in array
+    function runQuery($sql){
+        $returnValue = array();
+        $globalFunctionsConn = openDBConnection();
+        $results = $globalFunctionsConn->query($sql);
+        while($row = $results->fetch_assoc()) { 
+            $returnValue[] = $row;
+        }
+        
+        return $returnValue;
     }
     
     

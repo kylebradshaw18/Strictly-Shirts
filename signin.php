@@ -1,17 +1,6 @@
 <?php 
-/**
- * This page is the sign in page where the user has to provide an email
- * and password with will bring them to the account page and set the session variable
- */
- 
 	// Start the session
 	session_start();
-	
-	//Check if session variable is set  if it is then go to the account page
-	if(isset($_SESSION['personId']) && !empty($_SESSION['personId'])) {
-		//navigate to the users account
-		header('Location: account.php');
-	}
 	
 	require_once('Globals/globalFunctions.php'); //Page for global function
 	require_once('Globals/connection.php'); //Connection Page
@@ -20,6 +9,13 @@
 	$errorHtml = "";
 	$email = "";
 	$temporaryPassword;
+	$navigation;
+	
+	if(isset($_GET['navigation']) && !empty($_GET['navigation'])){
+		$navigation = $_GET['navigation'];
+	} else if(isset($_POST['navigation']) && !empty($_POST['navigation'])){
+		$navigation = $_POST['navigation'];
+	} 
 	
 	//Check if we hit the submit button and are on a post back
 	if (!empty($_POST['password']) && !empty($_POST['email'])){
@@ -68,8 +64,14 @@
 			if($results ->num_rows > 0){ //Make sure we have no errors
 				//set the session person id variable to be used on other pages to what was returned
 				$_SESSION['personId'] = $results->fetch_assoc()['personId'];
-				//navigate to the users account
-				header('Location: account.php');
+				//Before navigation else where grab the query string and navigate there
+				if(strlen($navigation) > 3){
+					//navigate to the users account
+					header('Location: '.$navigation);
+				} else {
+					//navigate to the users account
+					header('Location: account.php');
+				}
 			} else { //Query did not grab any results show alert
 				$errorHtml .= addAlert("Sorry, the username/password is incorrect", "danger");
 			}
@@ -137,7 +139,7 @@
 								
 							<?php 
 								$passwordLabel = "";
-							if(isset($temporaryPassword)){ 
+							if(isset($temporaryPassword) && !empty($temporaryPassword)){ 
 								$passwordLabel = "New ";?>
 								<!--Temporary Password Section -->
 								<label for="signInTemporaryPassword">Temporary Password</label>
@@ -162,6 +164,7 @@
 									   required> 
 								
 								<input type="password"  id="temporaryPassword" name="temporaryPassword" value="<?php echo $temporaryPassword; ?>" hidden>
+								<input type="password"  id="navigation" name="navigation" value="<?php echo $navigation; ?>" hidden>
 								
 								<!--If we have time try to implement a remember me checkbox here -->
 								
