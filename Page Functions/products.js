@@ -1,4 +1,5 @@
 var htmlIdArray = ['productModalType', 'productModalColor', 'productModalSize'];
+<<<<<<< HEAD
 $(document).ready(function(){
     //Reset the values in the modal and set if edit
     $('#productModal').on('show.bs.modal', function(e) {
@@ -16,6 +17,8 @@ $(document).ready(function(){
         }
     });
 });
+=======
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
 
 function setModalValues(id){
     var alertString = "";
@@ -99,6 +102,7 @@ function setModal(inventory){
     }
     
     $("#productModalQuantityValue").val(qu);
+<<<<<<< HEAD
 }
 
 //Function that when it is called it will reset all of the options
@@ -150,6 +154,59 @@ function valuesChange(elem){
     setModal(getCurrentInventory());
 }
 
+=======
+}
+
+//Function that when it is called it will reset all of the options
+function valuesChange(elem){
+    var id = $(elem).attr("id");
+    var value = $(id).val();
+    var informationValue = JSON.parse($("#productsModalHiddenInfo").val());
+    
+    //type and color we reset all value 
+    //for size we do not have to 
+    switch(id){
+        case htmlIdArray[0]: //Reset Color and size
+            //Reset colors and size
+            for(var index = 1;index < htmlIdArray.length; index++){
+                resetDropdowns(htmlIdArray[index]);
+            }
+            
+            var colorSet = false;
+            for(var index = 0; index < informationValue.length; index++){
+                //Only enable the colors that we have for this type
+                if(value === informationValue[index].typeId){
+                    enableOptions(htmlIdArray[1], informationValue[index].colorId);
+                    if(!colorSet){
+                        setSelected(htmlIdArray[1]);
+                        colorSet = true;
+                    }
+                    if($("#"+htmlIdArray[2]).val() === informationValue[index].colorId){
+                        enableOptions(htmlIdArray[2], informationValue[index].sizeId);
+                    }
+                }
+            }
+            
+            //Set the size to the first option
+            setSelected(htmlIdArray[2]);
+            break;
+            
+        case htmlIdArray[1]:
+            //Reset size
+            resetDropdowns(htmlIdArray[2]);
+            
+            for(var index = 0; index < informationValue.length; index++){
+                if(value === informationValue[index].colorId){
+                    enableOptions(id, informationValue[index].sizeId);
+                }
+            }
+            setSelected(htmlIdArray[2]);
+            break;
+    }
+    setModal(getCurrentInventory());
+}
+
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
 //Find the current
 function getCurrentInventory(){
     var informationValue = JSON.parse($("#productsModalHiddenInfo").val());
@@ -217,6 +274,7 @@ function addToCart(productId, quantity){
     
     if(alertString.trim().length < 1){
         $.ajax(
+<<<<<<< HEAD
           {
             url : "ajax/addToCart.php",
             type: "POST",
@@ -274,10 +332,16 @@ function signInModal(){
     
     if(alertString.trim().length < 1){
         $.ajax(
+=======
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
           {
             url : "ajax/signIn.php",
             type: "POST",
+<<<<<<< HEAD
             data : {email:email, password:password},
+=======
+            data : {inventoryId: inventoryId, quantity:quantity},
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
             async: false,
             success: function(response) {
                 try{
@@ -307,6 +371,7 @@ function signInModal(){
             }
           });
     }
+<<<<<<< HEAD
     
     if(alertString.trim().length < 1){
         //No errors so the user is now logged in
@@ -315,5 +380,13 @@ function signInModal(){
         $('#productModal').modal('show');
     } else {
         $("#signInModalAlert").html(alertString);
+=======
+    debugger;
+    if(alertString.trim().length < 1){
+        //Reload the page will use the url to call the server so it will update all of the quantities
+        window.location.reload(true);
+    } else {
+        $("#productsModalAlert").html(alertString);
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
     }
 }

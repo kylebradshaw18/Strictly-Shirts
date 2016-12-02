@@ -3,6 +3,7 @@
     session_start();
     require_once('Globals/connection.php');
     require_once('Globals/buildHTML.php');
+<<<<<<< HEAD
     
     buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
     buildHeader(); //Builds the Header and Navigation Bar
@@ -13,6 +14,18 @@
     
     $categoryId = 1; //This variable is used for the category select on the left side of the screen
 ?>
+=======
+ 
+    buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
+    buildHeader(); //Builds the Header and Navigation Bar
+    
+    $categoryId = 1; //This variable is used for the category select on the left side of the screen
+    
+    //Builds the breadcrumbs dynamically
+    //  $array = array( array("products.php","Products") );
+    //  buildBreadCrumbs($array);?>
+      
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
 <script src="./Page Functions/products.js"></script>
 <div class="container">
     <!-- Selection Bar -->
@@ -57,9 +70,16 @@
     	if(!$mainResults || $mainResults ->num_rows < 1){ //Something went wrong or have no products in that category ?>
     		<div class="col-md-11 text-center" style="padding-top:5%;"><h3>No Products Found<hr style="width:25%;"></h3></div>
     	<?php } else{
+<<<<<<< HEAD
     	    while($mainRow = $mainResults->fetch_assoc()){ //Loop through main results for the product grid
             $categoryId = $mainRow['categoryId'];
         ?>
+=======
+    	    while($mainRow = $mainResults->fetch_assoc()){ 
+            //Loop through main results for the product grid
+            $categoryId = $mainRow['categoryId'];
+    ?>
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
     	        <!-- Item -->
                 <div class="col-md-3 col-sm-12 productsSpace">
                     <div class="col-md1 simpleCart_shelfItem">
@@ -105,8 +125,11 @@
     ?>
     </div>
 </div>
+<<<<<<< HEAD
 
 <input type="hidden" name="userLoggedIn" id="userLoggedIn" value="<?php echo $personId;?>" disabled="disabled">
+=======
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
 
 <!-- Product Modal =============================================================-->
 <div id="productModal" class="modal fade" role="dialog">
@@ -136,6 +159,14 @@
                         </div>
                         <div class="form-group">
                             <label for="productModalType" class="col-xs-4 control-label">Type:</label>
+<<<<<<< HEAD
+                            <div class="col-xs-5">
+                                <select class="form-control" id="productModalType" name="productModalType" onchange="valuesChange(this)">
+                                    <?php //Build Type select
+                                        $results = $conn->query("SELECT `typeId`, `type` FROM `types` ORDER BY `typeId`");
+                                        while($row = $results->fetch_assoc()) { ?>
+                                            <option value="<?php echo $row['typeId']; ?>"><?php echo $row['type']; ?></option>
+=======
                             <div class="col-xs-5">
                                 <select class="form-control" id="productModalType" name="productModalType" onchange="valuesChange(this)">
                                     <?php //Build Type select
@@ -154,6 +185,20 @@
                                         $results = $conn->query("SELECT `colorId`, `color` FROM `colors` ORDER BY `color`");
                                         while($row = $results->fetch_assoc()) { ?>
                                             <option value="<?php echo $row['colorId']; ?>"><?php echo $row['color']; ?></option>
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+<<<<<<< HEAD
+                            <label for="productModalColor" class="col-xs-4 control-label">Color:</label>
+                            <div class="col-xs-5">
+                                <select class="form-control" id="productModalColor" name="productModalColor" onchange="valuesChange(this)">
+                                    <?php //Build Color select
+                                        $results = $conn->query("SELECT `colorId`, `color` FROM `colors` ORDER BY `color`");
+                                        while($row = $results->fetch_assoc()) { ?>
+                                            <option value="<?php echo $row['colorId']; ?>"><?php echo $row['color']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -161,6 +206,10 @@
                         <div class="form-group">
                             <label for="productModalSize" class="col-xs-4 control-label">Size:</label>
                             <div class="col-xs-5">
+=======
+                            <label for="productModalSize" class="col-xs-4 control-label">Size:</label>
+                            <div class="col-xs-5">
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
                                 <select class="form-control" id="productModalSize" name="productModalSize" onchange="valuesChange(this)">
                                     <?php //Build Size select
                                         $results = $conn->query("SELECT `sizeId`, `size` FROM `sizes` ORDER BY `sizeId`");
@@ -199,13 +248,22 @@
                 </div>
             </div>
             <div class="modal-footer">
+<<<<<<< HEAD
                 <button class="btn btn-primary" onclick="addToCart()" id="productModalAddToCart" hidden>Add to Cart</button>
                 <button class="btn btn-primary" id="productModalSignIn" onclick="signIn()" data-toggle="modal" data-target="#signInModal" hidden>Sign In</button>
+=======
+                <?php if(isset($_SESSION['personId']) && !empty($_SESSION['personId'])) { ?>
+                    <button class="btn btn-primary" onclick="addToCart()" id="productModalAddToCart">Add to Cart</button>
+                <?php } else { ?>
+                    <a href="signin.php" class="button btn btn-primary" id="productModalSignIn">Sign In</a>
+                <?php } ?>
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
                 <button class="btn" data-dismiss="modal" id="productModalAddToCartClose" aria-hidden="true">Close</button>
             </div>
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 <!-- Sign In Modal =============================================================-->
 <div id="signInModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -252,5 +310,7 @@
         </div>
     </div>
 </div>
+=======
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
 <script type="text/javascript"> $('#productsSelectCategory').val(<?php echo $categoryId; ?>); </script>
 <?php buildFooter(true); //Builds the Footer ?>

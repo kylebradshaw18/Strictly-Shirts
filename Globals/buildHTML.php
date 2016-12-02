@@ -82,7 +82,11 @@
                                         <img  src="images/cart.png" alt="View Cart"/>
                                     </a>
                                 </h3>
+<<<<<<< HEAD
                                 <a href="cart.php">
+=======
+                                <a href="checkout.php">
+>>>>>>> 9009bb614a53eea711efb815e82699fa78567079
                                     <p>View Cart</p>
                                 </a>
                             </div>
