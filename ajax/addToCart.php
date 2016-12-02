@@ -29,11 +29,7 @@
                 $inventoryQuantity = $row["quantity"];
     	    }
     	    
-<<<<<<< HEAD
     	    //Have less products than they want so only give them what we have left
-=======
-    	    //Have less products than they want so only give them what we haev left
->>>>>>> 9009bb614a53eea711efb815e82699fa78567079
     	    if($inventoryQuantity < $quantity){
     	        $quantity = $inventoryQuantity;
     	        $inventoryQuantity = 0;

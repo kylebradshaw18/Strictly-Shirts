@@ -2857,13 +2857,10 @@ th {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-<<<<<<< HEAD
 }
 
 
 /** CART PAGE **/
 .check-out table tbody tr td div{
     padding-bottom: 1%;
-=======
->>>>>>> 9009bb614a53eea711efb815e82699fa78567079
 }
