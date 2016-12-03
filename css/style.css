@@ -2115,7 +2115,7 @@ select.in-drop, select.in-drop1 {
 }
 @media(max-width:480px){
 .matter-banner,.banner-mat {
-  width: 100%;
+  width: 80%;
   padding: 0;
 }
 .banner-mat img {

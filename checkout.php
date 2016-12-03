@@ -10,104 +10,76 @@
 		header('Location: signin.php?navigation='.substr($_SERVER['REQUEST_URI'],1,strlen($_SERVER['REQUEST_URI']) - 1));
 	}
 	$errorHtml = "";
+	$personId = $_SESSION['personId'];
 	
   buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string
-  buildHeader(); //Builds the Header and Navigation Bar?>
-  <script src="./Page Functions/cart.js"></script>
-  <div class='container'>
-    <div class='check-out'>
-      <h2 class="cart-header">Check Out</h2>
-      <!-- Cart Alert Area -->
-      <div id="cartAlert"><?php echo $errorHtml; ?></div>
-      
-      <?php //Check if the users cart is empty
-        $sql  = " SELECT DISTINCT `products`.`productId`, `categories`.`category`, `designs`.`design` ";
-        $sql .= " FROM `carts` INNER JOIN `inventory` ON `carts`.`inventoryId` = `inventory`.`inventoryId` ";
-        $sql .= "              INNER JOIN `products` ON `inventory`.`productId` = `products`.`productId` ";
-        $sql .= "              INNER JOIN `categories` ON `products`.`categoryId` = `categories`.`categoryId` ";
-        $sql .= "              INNER JOIN `designs` ON `products`.`designId` = `designs`.`designId` ";
-        $sql .= " WHERE `personId` = ".$_SESSION['personId'];
-        $sql .= " ORDER BY `products`.`productId`, `categories`.`category`, `designs`.`design`";
+  buildHeader(); //Builds the Header and Navigation Bar
+  
+  
+  $sql =   "SELECT * FROM `addresses` WHERE personId = '$personId' ORDER BY `isPrimaryAddress` LIMIT 1";
+                
+  $result = $conn->query($sql);
+  echo("Error description: " . mysqli_error($conn));
+  
+  echo "One";
+  while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+        $addressLine1 = $row["addressLine1"];
+        $apartmentNumber = $row["apartmentNumber"];
+        $city = $row["city"];
+        $state = $row["state"];
+        $zipcode = $row["zipcode"];
         
-        $imageResults = $conn->query($sql);
-        if($imageResults ->num_rows < 1){ // There are no items in cart ?>
-          <div class="text-center"><h3>Your cart is empty <hr style="width:18%;"></h3></div>
-      <?php } else{  
-        $grandTotal= 0;
-      ?>
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Sizes</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Action</th>
-                <th>Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              <form action="cart.php" method="get">
-      <?php //Loop through the users cart
-    	    while ($imageRow = $imageResults->fetch_assoc()) { 
-    	?>
-    	      <tr>
-              <td class="ring-in">
-                <a href="#" class="at-in">
-                  <img src="images/productsImages/<?php echo $imageRow['productId'];?>.jpg" class="img-responsive" alt="<?php echo $imageRow['design'];?>">
-                </a>
-                <div class="sed">
-                  <h5><?php echo $imageRow['category'];?></h5>
-                </div>
-                <br/>
-                <div class="sed">
-                  <h5><?php echo $imageRow['design'];?></h5>
-                </div>
-                <div class='clearfix'> </div>
-              </td>
-              <?php
-                //Build size column, quantity and price
-                $sizeColumn = "<td>";
-                $quantityColumn = "<td>";
-                $priceColumn = "<td>";
-                $actionColumn = "<td>";
-                $subTotal = 0;
-              
-                $innerSql  = " SELECT `sizes`.`size`, `sizes`.`sizeId`, `carts`.`cartId`, `carts`.`quantity`, `inventory`.`price` ";
-                $innerSql .= " FROM `sizes` INNER JOIN `inventory` ON `inventory`.`sizeId` = `sizes`.`sizeId` ";
-                $innerSql .= "              INNER JOIN `products` ON `inventory`.`productId` = `products`.`productId` ";
-                $innerSql .= "              INNER JOIN `carts` ON `carts`.`inventoryId` = `inventory`.`inventoryId` ";
-                $innerSql .= " WHERE `carts`.`personId` = ".$_SESSION['personId'];
-                $innerSql .= "   AND `products`.`productId` = ".$imageRow['productId'];
-                $innerSql .= " ORDER BY `sizes`.`sizeId`";
-                $innerResults = $conn->query($innerSql);
-                while($innerRow = $innerResults->fetch_assoc()){
-                  $sizeColumn .= "<div>".$innerRow['size']."</div>";
-                  $quantityColumn .= "<div>".$innerRow['quantity']."</div>";
-                  $priceColumn .= "<div>$".number_format((float)$innerRow['price'], 2, '.', '')."</div>";
-                  $actionColumn .= "<div><a href=\"cart.php?cart=".$innerRow['cartId']."\" class=\"btn btn-danger btn-xs button\">Remove Item</a></div>";
-                  $subTotal += ($innerRow['price'] * $innerRow['quantity']);
-                }
-                $grandTotal += $subTotal;
-                $sizeColumn .= "</td>";
-                $quantityColumn .= "</td>";
-                $priceColumn .= "</td>";
-                $actionColumn .= "</td>";
-                echo $sizeColumn.$quantityColumn.$priceColumn.$actionColumn."<td>$".number_format((float)$subTotal, 2, '.', '')."</td>";
-              ?>
-              </tr>
-    	    <?php }?>
-    	        </form>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="4"></td>
-                <td><a href="checkout.php" class="to-buy">Check Out</a></td>
-                <td>$<?php echo number_format((float)$grandTotal, 2, '.', ''); ?></td>
-              </tr>
-            </tfoot>
-        	</table>
-    	     <?php 	} ?>
+        echo "Address ".$addressLine1;
+        
+  }
+  echo "Two";
+  
+  $sql = "SELECT cardNum FROM `paymentmethods`WHERE personId = '$personId' ORDER BY `isPrimaryPayment` LIMIT 1" ;
+                
+  $result = $conn->query($sql);
+  echo("Error description: " . mysqli_error($conn));
+  
+  echo "PersonId ".$personId ;
+  
+  while ($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+        $cardNum = $row["cardNum"];
+        
+  }
+  $lastFour = substr($cardNum, -4);
+  
+  ?>
+  
+  <div class="row" style="margin-left: 4px;" >
+    <div class="col-md-3 col-sm-12 productsSpace">
+      <h3>Shipping Address</h3>
+    </div> 
+    
+    <div class="col-md-3 col-sm-12 productsSpace">
+      <p><?php echo $addressLine1." ".$apartmentNumber ?> </p>
+      <p> <?php echo $city." ".$state ?></p>
+      <p> <?php echo $zipcode ?></p>
+    </div> 
+    
+    <div class="col-md-3 col-sm-12 productsSpace">
+    <button type="button" class="form-control btn btn-sm btn-primary" data-toggle="modal" data-target="#productModal" value="Search">Add Address</button>
+    </div> 
+    
   </div>
-</div>
+  
+   <div class="row" style="margin-left: 4px;" >
+    <div class="col-md-3 col-sm-12 productsSpace">
+      <h3>Payment Method </h3>
+    </div> 
+    
+    <div class="col-md-3 col-sm-12 productsSpace">
+      <h1>Use card endig <?php echo $carNum ?> </h1> 
+    </div> 
+    
+     <div class="col-md-3 col-sm-12 productsSpace">
+     <button type="button" class="form-control btn btn-sm btn-primary" data-toggle="modal" data-target="#productModal" value="Search">Add Card</button>
+     </div>  
+      
+  </div>
+  
+  
 <?php  buildFooter(false); //Builds the Footer ?>
