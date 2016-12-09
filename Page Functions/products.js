@@ -5,7 +5,6 @@ $(document).ready(function(){
         //First hide the add to cart and sign in buttons
         $('#productModalAddToCart').hide();
         $('#productModalSignIn').hide();
-        debugger;
         //If the personid is greater than 0 show add to cart else show sign in
         var personid = $('#userLoggedIn').val();
         if(parseInt(personid) > 0){
@@ -263,7 +262,6 @@ function signInModal(){
     //Function used to make an ajax call then 
     var alertString = "", email = $("#signInModalEmail").val(), password = $("#signInModalPassword").val();
     
-    debugger;
     if(!email.trim().length > 0){
         alertString += addAlert("Please enter email address","danger");
     }
@@ -286,7 +284,6 @@ function signInModal(){
                     //Update the personId hidden input
                     $('#userLoggedIn').val(response[0]);
                     if(response.length > 1){ //Found an error
-                        debugger;
                         //Loop through response and create alerts set the index t one because the first is an empty string
                         for(var index = 1; index < response.length;index++){
                             alertString += addAlert(response[index],"danger");

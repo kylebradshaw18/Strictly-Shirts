@@ -66,7 +66,7 @@
 				$_SESSION['personId'] = $results->fetch_assoc()['personId'];
 				//Before navigation else where grab the query string and navigate there
 				if(strlen($navigation) > 3){
-					//navigate to the users account
+					//navigate where the user came from
 					header('Location: '.$navigation);
 				} else {
 					//navigate to the users account
@@ -103,7 +103,6 @@
 			$errorHtml.= addAlert("Temporary password is ".$temporaryPassword,"info");
 		}
 	}
-	
 	
 	require_once('Globals/buildHTML.php');
     buildHTMLHeadLinks('true');// Builds all of the links takes in parameter for the auto slider needs to be a string

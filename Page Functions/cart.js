@@ -39,7 +39,7 @@ function removeFromCart(cartId, quantity){
             }
           });
     }
-    debugger;
+    
     if(alertString.trim().length < 1){
         //Reload the page will use the url to call the server so it will update the cart table and page
         window.location.reload(true);

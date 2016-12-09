@@ -31,7 +31,7 @@
 	<div class="container">
 		<div class="content-top">
 			<div class="content-top1">
-				<div class="col-md-6">
+				<div class="col-md-6" style="height: 100px;">
 					<a class="twitter-timeline" href="https://twitter.com/maristshirts">Tweets by maristshirts</a>
 				</div>
 				<?php //Grab the top 10 designs 

@@ -42,9 +42,9 @@
 					$errorHtml.= addAlert("ERROR: Connection issue, Please call support","danger");
 				}
 				//Gets the id from the row that was just inserted and sets the session variable
-				$peopleId = $conn->insert_id;
-				$_SESSION['personId'] = $peopleId;
+				$_SESSION['personId'] = $conn->insert_id;
 			}
+			
 		} 
 		
 		//Passed all checks now bring them to the account page

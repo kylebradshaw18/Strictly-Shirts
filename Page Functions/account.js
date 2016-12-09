@@ -403,6 +403,7 @@ function accountModalAddress(){
         updateAddressTabTable();
         //Close modal by triggering a click on the close button
         $('#accountModalAddressClose').trigger('click');
+        
     }
 }
 
